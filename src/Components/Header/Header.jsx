@@ -1,7 +1,7 @@
-import React from 'react';
-import './Header.css';
+import React from "react";
+import "./Header.css";
 
-const Header = props => {
+const Header = (props) => {
   return (
     <header id="welcome-section">
       <div className="forest" />
@@ -14,16 +14,17 @@ const Header = props => {
           <span className="line">
             <span className="color">&</span> I code.
           </span>
-          
         </h1>
         <div className="buttons">
           <a href="#projects">my portfolio</a>
-          <a href="#contact" className="cta">
-            get in touch
+          <a
+            href="https://drive.google.com/file/d/1JJYMHz9UbtsCE4vXfTJY4I-9-I--tvkv/view?usp=sharing"
+            className="cta"
+          >
+            Resume
           </a>
           <span className="line">India</span>
         </div>
-        
       </div>
     </header>
   );

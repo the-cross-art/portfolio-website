@@ -1,34 +1,44 @@
-import React from 'react';
+import React from "react";
 
-const Project = props => {
+const Project = (props) => {
   const tech = {
-    sass: 'fab fa-sass',
-    css: 'fab fa-css3-alt',
-    js: 'fab fa-js-square',
-    react: 'fab fa-react',
-    vue: 'fab fa-vuejs',
-    d3: 'far fa-chart-bar',
-    node: 'fab fa-node',
-    python: 'fab fa-python',
-    aws: 'fab fa-aws'
+    sass: "fab fa-sass",
+    css: "fab fa-css3-alt",
+    js: "fab fa-js-square",
+    react: "fab fa-react",
+    vue: "fab fa-vuejs",
+    d3: "far fa-chart-bar",
+    node: "fab fa-node",
+    python: "fab fa-python",
+    aws: "fab fa-aws",
+    docker: "fab fa-docker",
   };
 
-  const link = props.link || 'http://';
-  const repo = props.repo || 'http://';
+  const link = props.link || "http://";
+  const repo = props.repo || "http://";
 
   return (
     <div className="project">
-      <a className="project-link" href={link} target="_blank" rel="noopener noreferrer">
-        <img className="project-image" src={props.img} alt={'Screenshot of ' + props.title} />
+      <a
+        className="project-link"
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          className="project-image"
+          src={props.img}
+          alt={"Screenshot of " + props.title}
+        />
       </a>
       <div className="project-details">
         <div className="project-tile">
           <p className="icons">
-            {props.tech.split(' ').map(t => (
+            {props.tech.split(" ").map((t) => (
               <i className={tech[t]} key={t} />
             ))}
           </p>
-          {props.title}{' '}
+          {props.title}{" "}
         </div>
         {props.children}
         <div className="buttons">
