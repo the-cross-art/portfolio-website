@@ -97,6 +97,14 @@ const About = (props) => {
             <p className="separator" />
           </div>
           <div className="desc full">
+          <h4 className="subtitle">Data Engineer & NLP Intern , Episource LLC</h4>
+            <p>
+            Developed multi-repo documentation service from scratch and deployed on AWS{" "}
+            </p>
+            <p>
+            Designed and implemented CI/CD workflows for continuous integration and validation of documentation.
+            </p>
+            
             <h4 className="subtitle">Full Stack Developer , Web Cannon-Z</h4>
             <p>
               Developed full-stack web applications which processed, analyzed,

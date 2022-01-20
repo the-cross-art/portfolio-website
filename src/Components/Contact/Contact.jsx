@@ -16,7 +16,7 @@ const Contact = props => {
             <p className="subtitle">
               Please, use the form below or send an email to {''}
               <span className="mail">
-                imram.nazir.286
+                imrannaz326
                 <i className="fas fa-at at" />
                 gmail
                 <i className="fas fa-circle dot" />
@@ -27,7 +27,8 @@ const Contact = props => {
           </div>
           <SocialLinks />
         </div>
-        <form id="contact-form" action="#">
+        <form id="contact-form" name="contact v1" method="post" data-netlify="true" onSubmit="submit">
+          <input type="hidden" name="form-name" value="contact v1" />
           <input placeholder="Name" name="name" type="text" required />
           <input placeholder="Email" name="email" type="email" required />
           <textarea placeholder="Message" type="text" name="message" />
