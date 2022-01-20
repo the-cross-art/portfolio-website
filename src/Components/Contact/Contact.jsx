@@ -27,8 +27,8 @@ const Contact = props => {
           </div>
           <SocialLinks />
         </div>
-        <form id="contact-form" name="contact v1" method="post" data-netlify="true" onSubmit="submit">
-          <input type="hidden" name="form-name" value="contact v1" />
+        <form id="contact-form" name="contact" method="POST" data-netlify="true" onSubmit="submit">
+          <input type="hidden" name="form-name" value="contact" />
           <input placeholder="Name" name="name" type="text" required />
           <input placeholder="Email" name="email" type="email" required />
           <textarea placeholder="Message" type="text" name="message" />
