@@ -18,7 +18,7 @@ const Header = (props) => {
         <div className="buttons">
           <a href="#projects">my portfolio</a>
           <a
-            href="https://drive.google.com/file/d/1JJYMHz9UbtsCE4vXfTJY4I-9-I--tvkv/view?usp=sharing"
+            href="https://drive.google.com/file/d/1_mwrlp5hkRX6Qix-zBnamVV9WRvIo054/view?usp=sharing&usp=embed_facebook"
             className="cta"
           >
             Resume

@@ -34,110 +34,200 @@ const About = (props) => {
           <div className="desc">
             <h4 className="subtitle">Know About me!</h4>
             <p>
-              I am a passionate and creative developer from India with a strong
-              interest in Open source projects. I am currently enrolled in a
-              Bachelor of Technology ( B. Tech ) degree in Civil Engineering. I
-              mostly work on full stack web development with Cloud-Native
-              technologies.
+              I am an adept IT professional specializing in the development and
+              debugging of web servers, APIs, libraries, and tools using
+              JavaScript. Over the past two years, my career trajectory has
+              evolved, providing me with a rich tapestry of experiences that
+              have enhanced my skills and broadened my perspective.
             </p>
 
             <p>
-              I have contributed to some of the small Open Source projects . I
-              am also a startup enthusiast and have experience in building tech
-              startups from scratch.
+              My journey began as a Full-stack Developer Intern at Web Cannon-Z,
+              where I seamlessly collaborated with development teams to create
+              applications for both mobile and web platforms. This experience
+              not only solidified my coding prowess but also underscored the
+              importance of effective teamwork and task delegation for overall
+              project efficiency.
             </p>
 
             <p>
-              I am Fully-committed to designing and developing innovative
-              materials. I am highly self-motivated, enthusiastic and always
-              willing to learn more.
+              Motivated by a passion for data and a desire to merge my software
+              development acumen, I transitioned to the role of a Data Engineer
+              Intern at Optum. In this role, I orchestrated the coordination of
+              Data Science and Data Engineering Operations, resulting in the
+              implementation of CI/CD pipelines that significantly improved
+              software design, debugging, and release processes by 20%.
+              Additionally, I played a pivotal role in the MLOps team, leading
+              initiatives to enhance end-to-end model lifecycles and developer
+              experience. Noteworthy achievements include successfully
+              orchestrating the gradual transition of our team's AWS
+              infrastructure to a modular and meticulously tested Infrastructure
+              as Code (IaC) paradigm using Terraform. I also designed
+              infrastructure CI pipelines utilizing Github Actions to automate
+              Airflow-based infrastructure alterations.
             </p>
             <p>
-              For the back-end I also work with Javascript (NodeJS, Express,
-              MongoDB, etc). But, of course, whenever the project requires
-              Django, I do Django as well .
+              My problem-solving approach is rooted in astute critical thinking,
+              adept time management, and refined communication competencies.
+              Throughout my career, I have consistently delivered substantive
+              contributions, instigating positive transformations in my previous
+              roles. As a collaborative team player at heart, I am always eager
+              to share insightful perspectives and contribute to steering
+              consequential outcomes. For the back-end I also work with
+              Javascript (NodeJS, Express, MongoDB, etc). But, of course,
+              whenever the project requires Django, I do Django as well .
             </p>
           </div>
           <div className="desc">
             <h4 className="subtitle">I'm a programmer..</h4>
-            <p>
+            <div>
               <ul>
                 <li>
-                  {" "}
-                  I mostly work on developing and debugging web servers, APIs,
-                  Libraries and tools using 𝗝𝗮𝘃𝗮𝘀𝗰𝗿𝗶𝗽𝘁.
+                  Skilled in developing and debugging web servers, APIs,
+                  Libraries, and tools using JavaScript.
                 </li>
                 <li>
-                  Proficient in building servers and APIs using 𝗥𝗘𝗦𝗧, 𝗛𝗧𝗧𝗣/𝗝𝗦𝗢𝗡.
+                  Proficient in building servers and APIs utilizing REST, HTML,
+                  and JSON, with expertise in HTML/JSON and JavaScript/JSON.
                 </li>
                 <li>
-                  Experience with Cloud service providers (CSPs), including
-                  Heroku, 𝗔𝗺𝗮𝘇𝗼𝗻 𝗪𝗲𝗯 𝗦𝗲𝗿𝘃𝗶𝗰𝗲𝘀 (𝗔𝗪𝗦).
+                  Hands-on experience with various Cloud service providers
+                  (CSPs), including Heroku and Amazon Web Services (AWS).
                 </li>
                 <li>
-                  Proficient with 𝗠𝗮𝗰 / 𝗟𝗶𝗻𝘂𝘅, 𝗕𝗮𝘀𝗵, 𝗚𝗜𝗧 and 𝗦𝗵𝗲𝗹𝗹 scripting.
+                  Proficient in Mac/Linux environments, with strong scripting
+                  skills in languages such as Bash, Git, and Shell.
                 </li>
                 <li>
-                  Experience with Relational Databases (𝗠𝘆𝗦𝗤𝗟, 𝗣𝗼𝘀𝘁𝗴𝗿𝗲𝗦𝗤𝗟 ) and
-                  NoSQL databases ( 𝗠𝗼𝗻𝗴𝗼𝗗𝗕 , DyanmoDb(AWS) )
+                  Extensive experience working with both Relational Databases
+                  (MySQL, PostgreSQL) and NoSQL databases (MongoDB, DynamoDB -
+                  AWS).
                 </li>
                 <li>
-                  Experience with 𝗠𝗘𝗥𝗡 ( 𝗠𝗼𝗻𝗴𝗼𝗗𝗕, 𝗘𝘅𝗽𝗿𝗲𝘀𝘀. 𝗷𝘀, 𝗥𝗲𝗮𝗰𝘁, 𝗮𝗻𝗱 𝗡𝗼𝗱𝗲.
-                  𝗷𝘀 ) stack. & Django Framework
+                  In-depth knowledge and hands-on experience with the MEAN
+                  (MongoDB, Express.js, Angular, Node.js) stack, coupled with
+                  expertise in the Django Framework.
                 </li>
                 <li>
-                  Proficient with 𝗗𝗼𝗰𝗸𝗲𝗿 and container orchestration tools such
-                  as 𝗞𝘂𝗯𝗲𝗿𝗻𝗲𝘁𝗲𝘀, 𝗗𝗼𝗰𝗸𝗲𝗿-𝗦𝘄𝗮𝗿𝗺.
+                  Skilled in Docker and container orchestration tools, including
+                  Kubernetes and Docker-Swarm.
+                </li>
+                <li>
+                  Actively engaged in server-side technologies such as Node.js,
+                  Express.js, and Flask for efficient web server development.
+                </li>
+                <li>
+                  Familiarity with DevOps practices, including Infrastructure as
+                  Code (IaC) using Terraform and automation using GitHub
+                  Actions.
+                </li>
+                <li>
+                  Expertise in MLOps and data engineering, orchestrating
+                  coordination between Data Science & Data Engineering
+                  Operations.
+                </li>
+                <li>
+                  Contribution to the conception of CI/CD pipelines resulting in
+                  a remarkable 20% enhancement in software design, debugging,
+                  and release processes.
+                </li>
+                <li>
+                  Spearheading initiatives in the MLOps team to elevate
+                  end-to-end model lifecycles and enhance developer experience.
+                </li>
+                <li>
+                  Successful orchestration of the gradual transition of existing
+                  AWS infrastructure to a modular and meticulously tested
+                  Infrastructure as Code (IaC) paradigm using Terraform.
+                </li>
+                <li>
+                  Designing infrastructure CI pipelines employing GitHub Actions
+                  to automate Airflow-based infrastructure alterations.
+                </li>
+                <li>
+                  Well-versed in database technologies such as MongoDB,
+                  Express.js, React, and Node.js (MERN stack).
+                </li>
+                <li>
+                  Proficient in Docker and container orchestration tools,
+                  including Kubernetes and Docker-Swarm.
+                </li>
+                <li>
+                  Well-versed in Django Framework for robust and scalable web
+                  application development.
+                </li>
+                <li>
+                  Expertise in Docker for containerization and Kubernetes for
+                  container orchestration, ensuring seamless deployment and
+                  scaling of applications.
+                </li>
+                <li>
+                  Skilled in Docker and container orchestration tools such as
+                  Kubernetes and Docker-Swarm.
                 </li>
               </ul>
-            </p>
+            </div>
           </div>
           <div className="title">
             <h3>Experience</h3>
             <p className="separator" />
           </div>
           <div className="desc full">
-          <h4 className="subtitle">Data Engineer & NLP Intern , Episource LLC</h4>
-            <p>
-            Developed multi-repo documentation service from scratch and deployed on AWS{" "}
-            </p>
-            <p>
-            Designed and implemented CI/CD workflows for continuous integration and validation of documentation.
-            </p>
-            
-            <h4 className="subtitle">Full Stack Developer , Web Cannon-Z</h4>
-            <p>
-              Developed full-stack web applications which processed, analyzed,
-              and rendered data visually.{" "}
-            </p>
-            <p>
-              Incorporated scripts using Javascript and Typescript to manage
-              time-sensitive updates, including content changes and database
-              upgrades
-            </p>
-            <p>
-              Utilized Docker and Kubernetes to to build and run multiple
-              portable environments of the software stack, declarative
-              configuration, automation, and generating a report of the results
-              once per day
-            </p>
-            <h4 className="subtitle">Technical Incharge ,𝗠𝗼𝐝𝐞𝐥 𝐂𝐥𝐮𝐛</h4>
-            <p>
-              Designed technical architecture proposals to enhance and integrate
-              club website or Robotics Systems.
-            </p>
             <h4 className="subtitle">
-              Member at INSTITUTION INNOVATION COUNCIL - BIT SINDRI
+              Data Engineer, Optum (UnitedHealth Group)
             </h4>
             <p>
-              Determined the expenditures and benefits of planned events to
-              ensure revenue generation as a result.
+              • Design and implement end-to-end data pipelines utilizing Kafka,
+              DynamoDB, and Snowflake, ensuring efficient processing and
+              delivery.
             </p>
-            <h4 className="subtitle">Member at STARTUP CELL - BIT SINDRI</h4>
             <p>
-              Mentoring and helping young budding minds to kindle
-              entrepreneurship culture among them by providing with incubation
-              centres and guidance from successful entrepreneurs.
+              • Lead initiatives for MLOps automation testing, enhancing
+              end-to-end model stability and developer experience.
+            </p>
+            <p>
+              • Spearheaded the migration of the team’s model serving tool to
+              AWS Sagemaker infrastructure, leveraging well-tested
+              Infrastructure as Code (IaC) with Terraform. Designed and
+              implemented CI/CD pipelines using Github Actions to automate
+              changes to the Sagemaker Async-based infrastructure.
+            </p>
+
+            <h4 className="subtitle">Data Engineer Intern, Episource</h4>
+            <p>
+              • Spearhead diverse projects, including integrating external APIs
+              into a No Code App and synchronizing Amplify Studio with Figma for
+              centralized UI design. Streamline backend API development using
+              Docker microservices with AppWrite, significantly improving
+              efficiency and scalability.
+            </p>
+            <p>
+              • Implement advanced access control strategies using middleware
+              technologies like Casbin and OSO, enhancing overall security
+              protocols.
+            </p>
+            <p>
+              • Optimize memory load in Airflow Directed Acyclic Graphs (DAGs),
+              demonstrating strong problem-solving skills in complex,
+              high-pressure scenarios.
+            </p>
+
+            <h4 className="subtitle">
+              Full Stack Developer Intern, Web Cannon-Z
+            </h4>
+            <p>
+              • Developed full-stack web applications and Software Development
+              which processed, analyzed, and rendered data visually.
+            </p>
+            <p>
+              • Incorporated scripts and API using Javascript and Typescript to
+              manage time-sensitive updates, including content changes and
+              database upgrades.
+            </p>
+            <p>
+              • Build reusable code and libraries for future use also
+              collaborated with back-end developers and web designers to improve
+              usability.
             </p>
           </div>
         </article>
