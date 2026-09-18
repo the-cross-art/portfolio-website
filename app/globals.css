@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Theme transitions ─────────────────────── */
+*, *::before, *::after {
+  transition:
+    background-color 0.15s ease,
+    border-color     0.15s ease,
+    color            0.12s ease;
+}
+
+/* ── Base ──────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f7f8fa;
+  color: #0f172a;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark body {
+  background-color: #0a0a0f;
+  color: #e2e8f0;
+}
+
+/* ── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+html.dark ::-webkit-scrollbar-thumb { background: #1e1e2e; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+html.dark ::-webkit-scrollbar-thumb:hover { background: rgba(34,211,238,0.25); }
+
+/* ── Selection ─────────────────────────────── */
+::selection {
+  background: rgba(34, 211, 238, 0.18);
+  color: #0891b2;
+}
+html.dark ::selection {
+  color: #67e8f9;
+}
+
+/* ── Keyframes ─────────────────────────────── */
+@keyframes flowDot {
+  0%   { left: -6px;               opacity: 0; }
+  8%   {                            opacity: 1; }
+  92%  {                            opacity: 1; }
+  100% { left: calc(100% + 6px);   opacity: 0; }
+}
+
+@keyframes flowDotV {
+  0%   { top: -6px;               opacity: 0; }
+  8%   {                           opacity: 1; }
+  92%  {                           opacity: 1; }
+  100% { top: calc(100% + 6px);   opacity: 0; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(34,211,238,0.25), 0 0 0 1px rgba(34,211,238,0.2);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(34,211,238,0.55), 0 0 0 1px rgba(34,211,238,0.4);
+  }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.animate-fade-in-up { animation: fadeInUp 0.65s ease-out forwards; }
