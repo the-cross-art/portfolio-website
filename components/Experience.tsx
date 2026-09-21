@@ -64,7 +64,7 @@ export default function Experience() {
                   style={exp.current ? { boxShadow: '0 0 10px rgba(34,211,238,0.7)' } : undefined}
                 />
 
-                <div className="border border-black/[0.07] dark:border-white/[0.07] rounded-xl p-6 bg-white/70 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.035] hover:border-black/[0.10] dark:hover:border-white/[0.11] transition-all">
+                <div className="border border-black/[0.07] dark:border-white/[0.07] rounded-2xl p-6 bg-white/70 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.035] hover:border-black/[0.10] dark:hover:border-white/[0.11] transition-all">
                   <div className="flex flex-wrap items-start justify-between gap-3 mb-5">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
@@ -98,7 +98,7 @@ export default function Experience() {
 
           {/* Education footnote */}
           <div className="md:pl-10 mt-6">
-            <div className="border border-black/[0.05] dark:border-white/[0.05] rounded-xl px-6 py-4 flex flex-wrap items-center justify-between gap-2">
+            <div className="border border-black/[0.05] dark:border-white/[0.05] rounded-2xl px-6 py-4 flex flex-wrap items-center justify-between gap-2">
               <div>
                 <p className="text-slate-500 dark:text-slate-500 text-sm">
                   <span className="text-slate-700 dark:text-slate-400">B.Tech Civil Engineering</span>

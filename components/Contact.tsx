@@ -40,7 +40,7 @@ export default function Contact() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 border border-black/[0.08] dark:border-white/[0.08] rounded-lg text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:border-black/[0.15] dark:hover:border-white/[0.18] text-xs font-mono transition-all"
+                  className="px-4 py-2 border border-black/[0.08] dark:border-white/[0.08] rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:border-black/[0.15] dark:hover:border-white/[0.18] text-xs font-mono transition-all"
                 >
                   {s.label} ↗
                 </a>
@@ -62,24 +62,24 @@ export default function Contact() {
               name="name"
               placeholder="Name"
               required
-              className="w-full px-4 py-3 bg-white dark:bg-white/[0.04] border border-black/[0.09] dark:border-white/[0.09] rounded-lg text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-700 text-sm font-mono focus:outline-none focus:border-cyan-400/50 dark:focus:border-cyan-400/40 transition-all"
+              className="w-full px-4 py-3 bg-white dark:bg-white/[0.04] border border-black/[0.09] dark:border-white/[0.09] rounded-xl text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-700 text-sm font-mono focus:outline-none focus:border-cyan-400/50 dark:focus:border-cyan-400/40 transition-all"
             />
             <input
               type="email"
               name="email"
               placeholder="Email"
               required
-              className="w-full px-4 py-3 bg-white dark:bg-white/[0.04] border border-black/[0.09] dark:border-white/[0.09] rounded-lg text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-700 text-sm font-mono focus:outline-none focus:border-cyan-400/50 dark:focus:border-cyan-400/40 transition-all"
+              className="w-full px-4 py-3 bg-white dark:bg-white/[0.04] border border-black/[0.09] dark:border-white/[0.09] rounded-xl text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-700 text-sm font-mono focus:outline-none focus:border-cyan-400/50 dark:focus:border-cyan-400/40 transition-all"
             />
             <textarea
               name="message"
               placeholder="Message"
               rows={5}
-              className="w-full px-4 py-3 bg-white dark:bg-white/[0.04] border border-black/[0.09] dark:border-white/[0.09] rounded-lg text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-700 text-sm font-mono focus:outline-none focus:border-cyan-400/50 dark:focus:border-cyan-400/40 transition-all resize-none"
+              className="w-full px-4 py-3 bg-white dark:bg-white/[0.04] border border-black/[0.09] dark:border-white/[0.09] rounded-xl text-slate-700 dark:text-slate-300 placeholder-slate-400 dark:placeholder-slate-700 text-sm font-mono focus:outline-none focus:border-cyan-400/50 dark:focus:border-cyan-400/40 transition-all resize-none"
             />
             <button
               type="submit"
-              className="w-full px-4 py-3 bg-cyan-50 dark:bg-cyan-400/10 border border-cyan-200 dark:border-cyan-400/30 text-cyan-700 dark:text-cyan-300 rounded-lg text-sm font-mono hover:bg-cyan-100 dark:hover:bg-cyan-400/20 hover:border-cyan-300 dark:hover:border-cyan-400/50 transition-all"
+              className="w-full px-4 py-3 bg-cyan-50 dark:bg-cyan-400/10 border border-cyan-200 dark:border-cyan-400/30 text-cyan-700 dark:text-cyan-300 rounded-xl text-sm font-mono hover:bg-cyan-100 dark:hover:bg-cyan-400/20 hover:border-cyan-300 dark:hover:border-cyan-400/50 transition-all"
             >
               send message →
             </button>

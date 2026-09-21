@@ -87,7 +87,7 @@ export default function Writing() {
               href={a.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group border border-black/[0.07] dark:border-white/[0.07] rounded-xl overflow-hidden bg-white dark:bg-white/[0.02] hover:border-black/[0.12] dark:hover:border-white/[0.12] transition-all hover:shadow-lg dark:hover:shadow-none flex flex-col"
+              className="group border border-black/[0.07] dark:border-white/[0.07] rounded-2xl overflow-hidden bg-white dark:bg-white/[0.02] hover:border-black/[0.12] dark:hover:border-white/[0.12] transition-all hover:shadow-lg dark:hover:shadow-none flex flex-col"
             >
               {/* Image or gradient placeholder */}
               <div className="relative h-32 overflow-hidden shrink-0">

@@ -52,7 +52,7 @@ export default function About() {
               ].map(({ value, label }) => (
                 <div
                   key={label}
-                  className="border border-black/[0.07] dark:border-white/[0.07] rounded-lg p-4 text-center bg-white/80 dark:bg-white/[0.02]"
+                  className="border border-black/[0.07] dark:border-white/[0.07] rounded-xl p-4 text-center bg-white/80 dark:bg-white/[0.02]"
                 >
                   <p className="text-2xl font-bold text-cyan-600 dark:text-cyan-400 font-mono">{value}</p>
                   <p className="text-xs text-slate-600 dark:text-slate-500 mt-1">{label}</p>
@@ -63,7 +63,7 @@ export default function About() {
 
           {/* Photo + quick facts */}
           <div className="space-y-6">
-            <div className="rounded-xl overflow-hidden border border-black/[0.08] dark:border-white/[0.08]">
+            <div className="rounded-2xl overflow-hidden border border-black/[0.08] dark:border-white/[0.08]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/imran.jpeg"

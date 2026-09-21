@@ -2,12 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Theme transitions ─────────────────────── */
-*, *::before, *::after {
+/* ── Theme transitions ─────────────────────────
+   Gated behind .theme-ready (added after first paint)
+   so page load never animates colours from a wrong start.
+   Skipped entirely during a View Transition, which does
+   its own circular reveal instead. */
+html.theme-ready:not(.vt-active) *,
+html.theme-ready:not(.vt-active) *::before,
+html.theme-ready:not(.vt-active) *::after {
   transition:
-    background-color 0.15s ease,
-    border-color     0.15s ease,
-    color            0.12s ease;
+    background-color 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color     0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    fill             0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    color            0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── View Transition: circular theme reveal ─── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
 }
 
 /* ── Base ──────────────────────────────────── */

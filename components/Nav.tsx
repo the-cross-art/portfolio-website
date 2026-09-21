@@ -67,7 +67,10 @@ export default function Nav() {
 
           {/* Theme toggle */}
           <button
-            onClick={toggle}
+            onClick={e => {
+              const r = e.currentTarget.getBoundingClientRect()
+              toggle({ x: r.left + r.width / 2, y: r.top + r.height / 2 })
+            }}
             className="text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors p-1"
             aria-label="Toggle theme"
           >
@@ -78,7 +81,7 @@ export default function Nav() {
             href="https://www.dropbox.com/scl/fi/rff4d1qic60bwgkodgo0q/imran_resume_mle.pdf?rlkey=00tq7rj7ltju1yqzw9in9ttpw&st=x9pgfz91&dl=0"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-xs px-3 py-1.5 border border-cyan-400/40 dark:border-cyan-400/30 text-cyan-600 dark:text-cyan-400 rounded-md hover:bg-cyan-50 dark:hover:bg-cyan-400/10 transition-all"
+            className="font-mono text-xs px-3 py-1.5 border border-cyan-400/40 dark:border-cyan-400/30 text-cyan-600 dark:text-cyan-400 rounded-lg hover:bg-cyan-50 dark:hover:bg-cyan-400/10 transition-all"
           >
             resume ↗
           </a>
@@ -87,7 +90,10 @@ export default function Nav() {
         {/* Mobile row: theme toggle + hamburger */}
         <div className="md:hidden flex items-center gap-3">
           <button
-            onClick={toggle}
+            onClick={e => {
+              const r = e.currentTarget.getBoundingClientRect()
+              toggle({ x: r.left + r.width / 2, y: r.top + r.height / 2 })
+            }}
             className="text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors p-1"
             aria-label="Toggle theme"
           >

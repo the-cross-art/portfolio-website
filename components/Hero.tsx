@@ -31,7 +31,7 @@ function Node({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center px-3 py-2 rounded-lg border text-center w-full ${styles[variant]}`}
+      className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl border text-center w-full ${styles[variant]}`}
       style={glow ? { animation: 'pulseGlow 2.5s ease-in-out infinite' } : undefined}
     >
       <span className={`text-[10px] font-mono font-semibold leading-snug ${labelStyles[variant]}`}>
@@ -161,7 +161,7 @@ export default function Hero() {
                   href={href}
                   {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   className={[
-                    'px-5 py-2.5 rounded-lg text-sm font-mono transition-all',
+                    'px-5 py-2.5 rounded-xl text-sm font-mono transition-all',
                     primary
                       ? 'bg-cyan-50 dark:bg-cyan-400/10 border border-cyan-300 dark:border-cyan-400/30 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-100 dark:hover:bg-cyan-400/20'
                       : 'bg-black/[0.04] dark:bg-white/[0.04] border border-black/[0.09] dark:border-white/10 text-slate-600 dark:text-slate-400 hover:bg-black/[0.07] dark:hover:bg-white/[0.08] hover:text-slate-900 dark:hover:text-slate-200',
@@ -178,7 +178,7 @@ export default function Hero() {
             className="animate-fade-in-up"
             style={{ animationDelay: '400ms', opacity: 0 }}
           >
-            <div className="border border-black/[0.07] dark:border-white/[0.07] rounded-xl bg-white/60 dark:bg-white/[0.02] p-5">
+            <div className="border border-black/[0.07] dark:border-white/[0.07] rounded-2xl bg-white/60 dark:bg-white/[0.02] p-5">
 
               {/* Header */}
               <div className="flex items-center gap-2 mb-4">
@@ -218,7 +218,7 @@ export default function Hero() {
                 <Node label="Response" sub="served" />
 
                 {/* Monitoring annotation */}
-                <div className="mt-4 w-full border border-dashed border-black/[0.08] dark:border-white/[0.08] rounded-lg px-3 py-2 flex items-center gap-2">
+                <div className="mt-4 w-full border border-dashed border-black/[0.08] dark:border-white/[0.08] rounded-xl px-3 py-2 flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-green-500 dark:bg-green-400 shrink-0" />
                   <span className="font-mono text-[9px] text-slate-500 dark:text-slate-600">
                     CloudWatch · Prometheus · Grafana

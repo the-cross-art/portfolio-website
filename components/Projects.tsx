@@ -55,7 +55,7 @@ export default function Projects() {
           {projects.map((p) => (
             <div
               key={p.name}
-              className="border border-black/[0.07] dark:border-white/[0.07] rounded-xl p-6 bg-white/70 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.04] hover:border-black/[0.10] dark:hover:border-white/[0.11] transition-all flex flex-col"
+              className="border border-black/[0.07] dark:border-white/[0.07] rounded-2xl p-6 bg-white/70 dark:bg-white/[0.02] hover:bg-white dark:hover:bg-white/[0.04] hover:border-black/[0.10] dark:hover:border-white/[0.11] transition-all flex flex-col"
             >
               <div className="flex items-start justify-between mb-1">
                 <h3 className="text-slate-900 dark:text-slate-100 font-semibold text-[15px] leading-snug">{p.name}</h3>
