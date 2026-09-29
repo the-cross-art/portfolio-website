@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 /* ── Packet traffic ──
  * Uneven arrivals on purpose: two close together, then a gap. A fixed
@@ -192,6 +192,72 @@ function Throughput() {
   )
 }
 
+
+/* ── The cluster chain, defined once ──
+ * Rendered left-to-right on wide screens and top-to-bottom on narrow ones,
+ * so phones get the real topology instead of a horizontal scrollbar.
+ */
+type ChainNode =
+  | { kind: 'stage'; label: string; lines: string[]; variant: Variant; w: number; glow?: boolean }
+  | { kind: 'split'; w: number; options: { label: string; lines: string[] }[] }
+
+const CHAIN: ChainNode[] = [
+  { kind: 'stage', label: 'INGRESS', variant: 'network', w: 80, lines: ['ALB / NGINX'] },
+  {
+    kind: 'stage', label: 'SEMANTIC ROUTER', variant: 'serving', w: 130,
+    lines: ['prompt classification', 'model selection', 'cost / latency routing', 'LoRA selection'],
+  },
+  {
+    kind: 'stage', label: 'llm-d CONTROL PLANE', variant: 'serving', w: 136,
+    lines: ['request scheduling', 'KV-cache-aware routing', 'multi-cluster dispatch', 'GPU-aware placement'],
+  },
+  {
+    kind: 'split', w: 108,
+    options: [
+      { label: 'FAST MODELS', lines: ['Qwen · Llama'] },
+      { label: 'REASONING',   lines: ['DeepSeek · GPT-OSS'] },
+    ],
+  },
+  {
+    kind: 'stage', label: 'INFERENCE ENGINES', variant: 'serving', w: 142,
+    lines: ['vLLM · SGLang · Triton', 'prefix cache', 'continuous batching', 'speculative decoding', 'PagedAttention'],
+  },
+  {
+    kind: 'stage', label: 'MODEL OPTIMIZATION', variant: 'serving', w: 112,
+    lines: ['LoRA · QLoRA', 'AWQ · GPTQ', 'FP8 · INT4'],
+  },
+]
+
+const CLIENTS = { label: 'CLIENTS', lines: ['web · mobile', 'API consumers · agents'] }
+const EDGE = {
+  label: 'EDGE & SECURITY',
+  lines: ['CDN · API gateway · WAF', 'rate limiting · auth'],
+}
+const GPU = {
+  label: 'GPU NODE GROUPS',
+  lines: ['H100 · H200 · B200 · A100', 'tensor · pipeline · expert parallelism'],
+}
+
+function ChainStage({ node, vertical }: { node: ChainNode; vertical: boolean }) {
+  const sizing = vertical ? 'w-full' : `shrink-0`
+  const style = vertical ? undefined : { width: node.w }
+
+  if (node.kind === 'split') {
+    return (
+      <div className={`flex flex-col justify-center gap-1.5 ${sizing}`} style={style}>
+        {node.options.map(o => (
+          <Stage key={o.label} label={o.label} lines={o.lines} variant="serving" />
+        ))}
+      </div>
+    )
+  }
+  return (
+    <div className={sizing} style={style}>
+      <Stage label={node.label} lines={node.lines} variant={node.variant} glow={node.glow} />
+    </div>
+  )
+}
+
 export default function Architecture() {
   return (
     <section id="architecture" className="px-6 pb-24 pt-4">
@@ -213,114 +279,81 @@ export default function Architecture() {
           </span>
         </div>
 
-        {/* horizontally scrollable on narrow screens rather than shrinking to illegibility */}
-        <div className="overflow-x-auto rounded-2xl border border-black/[0.07] bg-white/60 p-5 dark:border-white/[0.07] dark:bg-white/[0.02]">
-          <div className="min-w-[1080px]">
+        <div className="rounded-2xl border border-black/[0.07] bg-white/60 p-4 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]">
 
-            {/* ingress row */}
+          {/* ── Wide: left to right ── */}
+          <div className="hidden lg:block">
             <div className="flex items-stretch gap-0">
               <div className="flex w-[178px] shrink-0 flex-col justify-center gap-2">
-                <Stage label="CLIENTS" lines={['web · mobile', 'API consumers · agents']} />
+                <Stage label={CLIENTS.label} lines={CLIENTS.lines} />
                 <VEdge delay={0} color="blue" h={18} />
-                <Stage
-                  label="EDGE & SECURITY"
-                  variant="network"
-                  lines={['CDN · API gateway · WAF', 'rate limiting · auth']}
-                />
+                <Stage label={EDGE.label} lines={EDGE.lines} variant="network" />
               </div>
               <HEdge delay={0.3} color="blue" w={36} />
 
-              {/* private network holds the cluster and the GPU pool */}
               <Zone label="private network (vpc)" className="flex-1">
                 <Zone label="kubernetes cluster" accent>
                   <div className="flex items-stretch gap-0">
-                    <Stage
-                      label="INGRESS"
-                      variant="network"
-                      lines={['ALB / NGINX']}
-                      className="w-[80px] shrink-0 self-center"
-                    />
-                    <HEdge delay={0.55} w={22} />
-
-                    <Stage
-                      label="SEMANTIC ROUTER"
-                      variant="serving"
-                      lines={['prompt classification', 'model selection', 'cost / latency routing', 'LoRA selection']}
-                      className="w-[130px] shrink-0"
-                    />
-                    <HEdge delay={0.8} w={22} />
-
-                    <Stage
-                      label="llm-d CONTROL PLANE"
-                      variant="serving"
-                      lines={['request scheduling', 'KV-cache-aware routing', 'multi-cluster dispatch', 'GPU-aware placement']}
-                      className="w-[136px] shrink-0"
-                    />
-                    <HEdge delay={1.05} w={22} />
-
-                    {/* the router picks one of two paths */}
-                    <div className="flex w-[108px] shrink-0 flex-col justify-center gap-1.5">
-                      <Stage label="FAST MODELS" variant="serving" lines={['Qwen · Llama']} />
-                      <Stage label="REASONING" variant="serving" lines={['DeepSeek · GPT-OSS']} />
-                    </div>
-                    <HEdge delay={1.3} w={22} />
-
-                    <Stage
-                      label="INFERENCE ENGINES"
-                      variant="serving"
-                      lines={['vLLM · SGLang · Triton', 'prefix cache', 'continuous batching', 'speculative decoding', 'PagedAttention']}
-                      className="w-[142px] shrink-0"
-                    />
-                    <HEdge delay={1.55} w={22} />
-
-                    <Stage
-                      label="MODEL OPTIMIZATION"
-                      variant="serving"
-                      lines={['LoRA · QLoRA', 'AWQ · GPTQ', 'FP8 · INT4']}
-                      className="w-[112px] shrink-0"
-                    />
+                    {CHAIN.map((node, i) => (
+                      <Fragment key={node.kind === 'split' ? 'split' : node.label}>
+                        {i > 0 && <HEdge delay={0.55 + i * 0.25} w={22} />}
+                        <ChainStage node={node} vertical={false} />
+                      </Fragment>
+                    ))}
                   </div>
                 </Zone>
 
-                {/* out of the cluster, onto the metal */}
                 <VEdge delay={0.2} h={26} />
-
-                <Stage
-                  label="GPU NODE GROUPS"
-                  variant="compute"
-                  glow
-                  lines={[
-                    'H100 · H200 · B200 · A100',
-                    'tensor · pipeline · expert parallelism',
-                  ]}
-                />
+                <Stage label={GPU.label} lines={GPU.lines} variant="compute" glow />
               </Zone>
             </div>
+          </div>
 
-            {/* observability spans every tier rather than sitting in the path */}
-            <div className="mt-4 rounded-xl border border-dashed border-black/[0.10] px-4 py-3 dark:border-white/[0.10]">
-              <div className="mb-2 flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-green-500 dark:bg-green-400" />
-                <span className="font-mono text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-500">
-                  Observability
-                </span>
-                <span className="ml-auto font-mono text-[8px] text-slate-400 dark:text-slate-700">
-                  instruments every tier above
-                </span>
-              </div>
-              <div className="grid grid-cols-4 gap-x-4">
-                {[
-                  ['metrics', 'Prometheus'],
-                  ['dashboards', 'Grafana'],
-                  ['logs', 'CloudWatch'],
-                  ['traces', 'OpenTelemetry'],
-                ].map(([kind, tool]) => (
-                  <div key={kind}>
-                    <div className="font-mono text-[8px] text-slate-400 dark:text-slate-600">{kind}</div>
-                    <div className="font-mono text-[10px] text-slate-600 dark:text-slate-400">{tool}</div>
-                  </div>
+          {/* ── Narrow: top to bottom, same topology ── */}
+          <div className="lg:hidden">
+            <Stage label={CLIENTS.label} lines={CLIENTS.lines} />
+            <VEdge delay={0} color="blue" h={22} />
+            <Stage label={EDGE.label} lines={EDGE.lines} variant="network" />
+            <VEdge delay={0.3} color="blue" h={22} />
+
+            <Zone label="private network (vpc)">
+              <Zone label="kubernetes cluster" accent>
+                {CHAIN.map((node, i) => (
+                  <Fragment key={node.kind === 'split' ? 'split' : node.label}>
+                    {i > 0 && <VEdge delay={0.55 + i * 0.25} h={22} />}
+                    <ChainStage node={node} vertical />
+                  </Fragment>
                 ))}
-              </div>
+              </Zone>
+
+              <VEdge delay={0.2} h={22} />
+              <Stage label={GPU.label} lines={GPU.lines} variant="compute" glow />
+            </Zone>
+          </div>
+
+          {/* observability spans every tier rather than sitting in the path */}
+          <div className="mt-4 rounded-xl border border-dashed border-black/[0.10] px-4 py-3 dark:border-white/[0.10]">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-500 dark:bg-green-400" />
+              <span className="font-mono text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-500">
+                Observability
+              </span>
+              <span className="ml-auto font-mono text-[8px] text-slate-400 dark:text-slate-700">
+                instruments every tier above
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-4">
+              {[
+                ['metrics', 'Prometheus'],
+                ['dashboards', 'Grafana'],
+                ['logs', 'CloudWatch'],
+                ['traces', 'OpenTelemetry'],
+              ].map(([kind, tool]) => (
+                <div key={kind}>
+                  <div className="font-mono text-[8px] text-slate-400 dark:text-slate-600">{kind}</div>
+                  <div className="font-mono text-[10px] text-slate-600 dark:text-slate-400">{tool}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

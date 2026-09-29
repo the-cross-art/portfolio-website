@@ -12,12 +12,28 @@ export const metadata: Metadata = {
     'AI Applied Engineer II at QuillBot. I build the infrastructure that serves LLMs at scale. Writing about GPU inference, Kubernetes, and ML systems.',
   keywords: ['MLOps', 'LLM Serving', 'Kubernetes', 'vLLM', 'GPU Inference', 'ML Infrastructure'],
   authors: [{ name: 'Imran Nazir' }],
+  metadataBase: new URL('https://meimran.me'),
   openGraph: {
     title: 'Imran Nazir — AI Applied Engineer',
-    description: 'AI Applied Engineer II at QuillBot. I build infrastructure that LLMs run on at scale.',
+    description: 'AI Applied Engineer II at QuillBot. I build the infrastructure that LLMs run on at scale.',
     url: 'https://meimran.me',
     siteName: 'Imran Nazir',
     type: 'website',
+    locale: 'en_US',
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'Imran Nazir — AI Applied Engineer II at QuillBot',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Imran Nazir — AI Applied Engineer',
+    description: 'AI Applied Engineer II at QuillBot. I build the infrastructure that LLMs run on at scale.',
+    images: ['/og.png'],
   },
 }
 
