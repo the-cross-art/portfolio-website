@@ -193,7 +193,7 @@ function Throughput() {
 }
 
 
-/* ── The cluster chain, defined once ──
+/* ── Topology data, defined once ──
  * Rendered left-to-right on wide screens and top-to-bottom on narrow ones,
  * so phones get the real topology instead of a horizontal scrollbar.
  */
@@ -201,45 +201,71 @@ type ChainNode =
   | { kind: 'stage'; label: string; lines: string[]; variant: Variant; w: number; glow?: boolean }
   | { kind: 'split'; w: number; options: { label: string; lines: string[] }[] }
 
-const CHAIN: ChainNode[] = [
-  { kind: 'stage', label: 'INGRESS', variant: 'network', w: 80, lines: ['ALB / NGINX'] },
+const CLIENTS = { label: 'CLIENTS', lines: ['web · mobile', 'API consumers · agents'] }
+
+const EDGE = {
+  label: 'EDGE & SECURITY',
+  lines: ['CDN · API gateway · WAF', 'rate limiting · auth'],
+}
+
+/* Front door. Owns the unified API surface, spend and retries —
+   it is also what actually calls the frontier providers. */
+const GATEWAY = {
+  label: 'LLM GATEWAY — LiteLLM',
+  lines: [
+    'OpenAI-compatible API',
+    'provider routing · load balancing',
+    'retries · fallbacks',
+    'rate limits · budgets · cost tracking',
+  ],
+}
+
+/* Decides which model class answers; the gateway then executes it. */
+const ROUTER = {
+  label: 'SEMANTIC ROUTER',
+  lines: [
+    'prompt / task classification',
+    'model selection',
+    'quality · cost · latency policy',
+    'reasoning vs fast path',
+  ],
+}
+
+const FRONTIER = {
+  label: 'FRONTIER MODELS',
+  lines: ['OpenAI · Anthropic', 'Gemini · Bedrock · Azure', 'called through LiteLLM'],
+}
+
+/* Everything inside the cluster, in order. */
+const SELF_HOSTED: ChainNode[] = [
   {
-    kind: 'stage', label: 'SEMANTIC ROUTER', variant: 'serving', w: 130,
-    lines: ['prompt classification', 'model selection', 'cost / latency routing', 'LoRA selection'],
+    kind: 'stage', label: 'llm-d CONTROL PLANE', variant: 'serving', w: 130,
+    lines: ['request scheduling', 'KV-cache-aware routing', 'GPU-aware placement'],
   },
   {
-    kind: 'stage', label: 'llm-d CONTROL PLANE', variant: 'serving', w: 136,
-    lines: ['request scheduling', 'KV-cache-aware routing', 'multi-cluster dispatch', 'GPU-aware placement'],
-  },
-  {
-    kind: 'split', w: 108,
+    kind: 'split', w: 100,
     options: [
       { label: 'FAST MODELS', lines: ['Qwen · Llama'] },
       { label: 'REASONING',   lines: ['DeepSeek · GPT-OSS'] },
     ],
   },
   {
-    kind: 'stage', label: 'INFERENCE ENGINES', variant: 'serving', w: 142,
-    lines: ['vLLM · SGLang · Triton', 'prefix cache', 'continuous batching', 'speculative decoding', 'PagedAttention'],
+    kind: 'stage', label: 'INFERENCE ENGINES', variant: 'serving', w: 138,
+    lines: ['vLLM · SGLang · Triton', 'prefix cache · PagedAttention', 'continuous batching', 'speculative decoding'],
   },
   {
-    kind: 'stage', label: 'MODEL OPTIMIZATION', variant: 'serving', w: 112,
+    kind: 'stage', label: 'MODEL OPTIMIZATION', variant: 'serving', w: 108,
     lines: ['LoRA · QLoRA', 'AWQ · GPTQ', 'FP8 · INT4'],
   },
 ]
 
-const CLIENTS = { label: 'CLIENTS', lines: ['web · mobile', 'API consumers · agents'] }
-const EDGE = {
-  label: 'EDGE & SECURITY',
-  lines: ['CDN · API gateway · WAF', 'rate limiting · auth'],
-}
 const GPU = {
-  label: 'GPU NODE GROUPS',
+  label: 'GPU NODE POOLS',
   lines: ['H100 · H200 · B200 · A100', 'tensor · pipeline · expert parallelism'],
 }
 
 function ChainStage({ node, vertical }: { node: ChainNode; vertical: boolean }) {
-  const sizing = vertical ? 'w-full' : `shrink-0`
+  const sizing = vertical ? 'w-full' : 'shrink-0'
   const style = vertical ? undefined : { width: node.w }
 
   if (node.kind === 'split') {
@@ -255,6 +281,29 @@ function ChainStage({ node, vertical }: { node: ChainNode; vertical: boolean }) 
     <div className={sizing} style={style}>
       <Stage label={node.label} lines={node.lines} variant={node.variant} glow={node.glow} />
     </div>
+  )
+}
+
+/* Visible fork off the router: one spine, two arms. */
+function Fork() {
+  return (
+    <div className="relative w-[30px] shrink-0" aria-hidden>
+      {/* arms sit at the vertical centre of each branch block */}
+      <div className="absolute left-0 top-[22%] h-px w-1/2 bg-black/[0.10] dark:bg-white/[0.12]" />
+      <div className="absolute left-0 top-[74%] h-px w-1/2 bg-black/[0.10] dark:bg-white/[0.12]" />
+      <div className="absolute left-1/2 top-[22%] h-[52%] w-px bg-black/[0.10] dark:bg-white/[0.12]" />
+      <div className="absolute left-1/2 top-[22%] h-px w-1/2 bg-black/[0.10] dark:bg-white/[0.12]" />
+      <div className="absolute left-1/2 top-[74%] h-px w-1/2 bg-black/[0.10] dark:bg-white/[0.12]" />
+    </div>
+  )
+}
+
+/* Small label on a branch, so the two routes off the router are named. */
+function BranchTag({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="font-mono text-[8px] uppercase tracking-wider text-slate-400 dark:text-slate-600">
+      {children}
+    </span>
   )
 }
 
@@ -284,28 +333,53 @@ export default function Architecture() {
           {/* ── Wide: left to right ── */}
           <div className="hidden lg:block">
             <div className="flex items-stretch gap-0">
-              <div className="flex w-[178px] shrink-0 flex-col justify-center gap-2">
+              <div className="flex w-[168px] shrink-0 flex-col justify-center gap-2">
                 <Stage label={CLIENTS.label} lines={CLIENTS.lines} />
                 <VEdge delay={0} color="blue" h={18} />
                 <Stage label={EDGE.label} lines={EDGE.lines} variant="network" />
               </div>
-              <HEdge delay={0.3} color="blue" w={36} />
+              <HEdge delay={0.3} color="blue" w={32} />
 
-              <Zone label="private network (vpc)" className="flex-1">
-                <Zone label="kubernetes cluster" accent>
-                  <div className="flex items-stretch gap-0">
-                    {CHAIN.map((node, i) => (
-                      <Fragment key={node.kind === 'split' ? 'split' : node.label}>
-                        {i > 0 && <HEdge delay={0.55 + i * 0.25} w={22} />}
-                        <ChainStage node={node} vertical={false} />
-                      </Fragment>
-                    ))}
+              <div className="w-[152px] shrink-0 self-center">
+                <Stage label={GATEWAY.label} lines={GATEWAY.lines} variant="network" />
+              </div>
+              <HEdge delay={0.55} w={22} />
+
+              <div className="w-[136px] shrink-0 self-center">
+                <Stage label={ROUTER.label} lines={ROUTER.lines} variant="serving" />
+              </div>
+              <HEdge delay={0.8} w={18} />
+              <Fork />
+
+              {/* the router picks one of two routes */}
+              <div className="flex min-w-0 flex-1 flex-col gap-3">
+                <div>
+                  <BranchTag>frontier</BranchTag>
+                  <div className="mt-1">
+                    <Stage label={FRONTIER.label} lines={FRONTIER.lines} variant="network" />
                   </div>
-                </Zone>
+                </div>
 
-                <VEdge delay={0.2} h={26} />
-                <Stage label={GPU.label} lines={GPU.lines} variant="compute" glow />
-              </Zone>
+                <div>
+                  <BranchTag>self-hosted</BranchTag>
+                  <div className="mt-1">
+                    <Zone label="private network (vpc)">
+                      <Zone label="kubernetes cluster" accent>
+                        <div className="flex items-stretch gap-0">
+                          {SELF_HOSTED.map((node, i) => (
+                            <Fragment key={node.kind === 'split' ? 'split' : node.label}>
+                              {i > 0 && <HEdge delay={1.05 + i * 0.25} w={20} />}
+                              <ChainStage node={node} vertical={false} />
+                            </Fragment>
+                          ))}
+                        </div>
+                      </Zone>
+                      <VEdge delay={0.2} h={24} />
+                      <Stage label={GPU.label} lines={GPU.lines} variant="compute" glow />
+                    </Zone>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -315,17 +389,24 @@ export default function Architecture() {
             <VEdge delay={0} color="blue" h={22} />
             <Stage label={EDGE.label} lines={EDGE.lines} variant="network" />
             <VEdge delay={0.3} color="blue" h={22} />
+            <Stage label={GATEWAY.label} lines={GATEWAY.lines} variant="network" />
+            <VEdge delay={0.55} h={22} />
+            <Stage label={ROUTER.label} lines={ROUTER.lines} variant="serving" />
+            <VEdge delay={0.8} h={22} />
 
+            <div className="mb-1"><BranchTag>frontier</BranchTag></div>
+            <Stage label={FRONTIER.label} lines={FRONTIER.lines} variant="network" />
+
+            <div className="mb-1 mt-4"><BranchTag>self-hosted</BranchTag></div>
             <Zone label="private network (vpc)">
               <Zone label="kubernetes cluster" accent>
-                {CHAIN.map((node, i) => (
+                {SELF_HOSTED.map((node, i) => (
                   <Fragment key={node.kind === 'split' ? 'split' : node.label}>
-                    {i > 0 && <VEdge delay={0.55 + i * 0.25} h={22} />}
+                    {i > 0 && <VEdge delay={1.05 + i * 0.25} h={22} />}
                     <ChainStage node={node} vertical />
                   </Fragment>
                 ))}
               </Zone>
-
               <VEdge delay={0.2} h={22} />
               <Stage label={GPU.label} lines={GPU.lines} variant="compute" glow />
             </Zone>
