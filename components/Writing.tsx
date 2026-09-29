@@ -72,7 +72,7 @@ export default function Writing() {
       <div className="max-w-5xl mx-auto">
 
         <div className="flex items-center gap-4 mb-4">
-          <span className="font-mono text-cyan-600 dark:text-cyan-400 text-sm">04.</span>
+          <span className="font-mono text-cyan-600 dark:text-cyan-400 text-sm">05.</span>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">writing</h2>
           <div className="flex-1 h-px bg-black/[0.06] dark:bg-white/[0.05]" />
         </div>
@@ -81,13 +81,14 @@ export default function Writing() {
         </p>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {articles.map((a) => (
+          {articles.map((a, i) => (
             <a
               key={a.url}
               href={a.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group border border-black/[0.07] dark:border-white/[0.07] rounded-2xl overflow-hidden bg-white dark:bg-white/[0.02] hover:border-black/[0.12] dark:hover:border-white/[0.12] transition-all hover:shadow-lg dark:hover:shadow-none flex flex-col"
+              style={{ ["--tilt" as string]: i % 2 === 0 ? "0.5deg" : "-0.5deg" }}
+              className="group border border-black/[0.07] dark:border-white/[0.07] rounded-2xl overflow-hidden bg-white dark:bg-white/[0.02] hover:border-black/[0.12] dark:hover:border-white/[0.12] card-tilt hover:shadow-xl dark:hover:shadow-none flex flex-col"
             >
               {/* Image or gradient placeholder */}
               <div className="relative h-32 overflow-hidden shrink-0">

@@ -11,7 +11,7 @@ export default function Contact() {
       <div className="max-w-5xl mx-auto">
 
         <div className="flex items-center gap-4 mb-12">
-          <span className="font-mono text-cyan-600 dark:text-cyan-400 text-sm">06.</span>
+          <span className="font-mono text-cyan-600 dark:text-cyan-400 text-sm">07.</span>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">contact</h2>
           <div className="flex-1 h-px bg-black/[0.06] dark:bg-white/[0.05]" />
         </div>
