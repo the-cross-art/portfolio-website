@@ -1,0 +1,5 @@
+# generated artefacts — rebuild with: node anatomy/stack/build.mjs [--light]
+*.html
+shot*.png
+hover.png
+lines.png
