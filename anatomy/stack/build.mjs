@@ -455,6 +455,47 @@ writeFileSync(
 )
 console.log('wrote', theme === 'light' ? 'page-light.html' : 'page.html')
 
+/* ── The two paths a request can take ── */
+const SHARED = [
+  [HOPPER[0], HOPPER[1], HOPPER_TOP + 14],
+  [HOPPER[0], HOPPER[1], GRATE_Z + 16],
+  [HOPPER[0], HOPPER[1], GRATE_Z + 5],
+  [MANI.x + MANI.w / 2, 0, GRATE_Z + 5],
+  [MANI.x + MANI.w / 2, 0, MANI_Z + MANI_H + 4],
+  [DIV[0], 0, MANI_Z + MANI_H + 4],
+  [DIV[0], 0, DIV_Z + 19],
+]
+
+const SELF_HOSTED_PATH = [
+  [DIV[0], 0, DIV_Z + 19],
+  [CARRIAGE_X, 0, DIV_Z + 19],
+  [CARRIAGE_X, 0, RAIL_Z + 13],
+  [DRUM_XS[0], DRUM_Y, RAIL_Z + 13],
+  [DRUM_XS[0], DRUM_Y, DRUM_Z + 14],
+  [DRUM_XS[1], DRUM_Y, DRUM_Z + 14],
+  [DRUM_XS[2], DRUM_Y, DRUM_Z + 14],
+  [DRUM_XS[2], DRUM_Y, PRESS_Z + 26],
+  [PRESS.x + PRESS.w / 2, PRESS.y + PRESS.d / 2, PRESS_Z + 26],
+  [PRESS.x + PRESS.w / 2, PRESS.y + PRESS.d / 2, PRESS_Z + 11],
+  [PRESS.x + PRESS.w / 2, PRESS.y + PRESS.d / 2, 2],
+]
+
+const FRONTIER_PATH = [
+  [DIV[0], 0, DIV_Z + 19],
+  [DIV[0] - 20, 0, DIV_Z + 19],
+  [DIV[0] - 20, 0, DIV_Z + 9],
+  [DIV[0] - 20, 40, DIV_Z + 9],
+  [DIV[0] - 20, 40, 14],
+  [OFFSITE.x + OFFSITE.w / 2, 40, 14],
+  [OFFSITE.x + OFFSITE.w / 2, OFFSITE.y + 8, 14],
+  [OFFSITE.x + OFFSITE.w / 2, OFFSITE.y + 8, OFFSITE_H],
+]
+
+const onScreen = pts => pts.map(pt => {
+  const [sx, sy] = at(pt)
+  return [Math.round(sx * 100) / 100, Math.round(sy * 100) / 100]
+})
+
 // The site renders the figure itself, so emit the art and the station data
 // as a module. Generated — do not edit by hand.
 if (theme === 'dark') {
@@ -476,6 +517,14 @@ if (theme === 'dark') {
     '}',
     '',
     'export const FIGURE_STATIONS: Station[] = ' + JSON.stringify(STATIONS, null, 2),
+    '',
+    '/** Screen-space routes a request takes, shared stem then one of two branches. */',
+    'export const FIGURE_ROUTES = {',
+    '  shared: ' + JSON.stringify(onScreen(SHARED)) + ',',
+    '  selfHosted: ' + JSON.stringify(onScreen(SELF_HOSTED_PATH)) + ',',
+    '  frontier: ' + JSON.stringify(onScreen(FRONTIER_PATH)) + ',',
+    '  selfHostedShare: ' + SELF_HOSTED_SHARE + ',',
+    '} as const',
     '',
   ].join('\n')
   writeFileSync(join(HERE, '..', '..', 'components', 'generated', 'stackFigure.ts'), mod)
