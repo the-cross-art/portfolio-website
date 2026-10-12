@@ -348,7 +348,7 @@ function ViewToggle({ view, onChange }: { view: View; onChange: (v: View) => voi
           key={v}
           onClick={() => onChange(v)}
           aria-pressed={view === v}
-          className={`rounded-md px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+          className={`${v === '2d' ? '' : 'hidden lg:inline-block'} rounded-md px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
             view === v
               ? 'bg-cyan-50 text-cyan-700 dark:bg-cyan-400/15 dark:text-cyan-300'
               : 'text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-300'

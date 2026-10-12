@@ -23,7 +23,7 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 const theme = process.argv.includes('--light') ? 'light' : 'dark'
 
 const WIDTH = 1040
-const HEIGHT = 580
+const HEIGHT = 560
 
 /* ── Plan ── */
 const FOOT_H = 6
@@ -76,7 +76,7 @@ const P = k.fitProjection(
   ],
   WIDTH,
   HEIGHT,
-  { pad: 34, azimuth: 44 },
+  { pad: 58, azimuth: 44 },
 )
 
 const at = p => k.iso(p, P)
