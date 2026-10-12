@@ -138,7 +138,14 @@ function bezel() {
   out.push(D(Array.from({ length: 6 }, (_, i) => at([BEZEL_X + BEZEL_W / 2, CH.y + 37 + i * 10, BEZEL_H])), { size: 0.5, tone: 'hi' }))
   const disp = { x: BEZEL_X + 3, y: CH.y + 8, w: BEZEL_W - 6, d: 16, r: 1 }
   out.push(S(k.slabOf(disp, BEZEL_H, 0.6, P, 1), { tone: 'lo', crease: 'none' }))
-  out.push(L([4, 7, 10, 13].map(dy => k.segment([disp.x + 2, disp.y + dy, BEZEL_H + 0.6], [disp.x + disp.w - 2, disp.y + dy, BEZEL_H + 0.6], P)).join(''), { tone: 'faint' }))
+  // lines of text on the LCD, as thin inlays rather than rules: they carry
+  // their own outline, so nothing hangs off the edge of the screen
+  for (const [i, frac] of [0.82, 0.55, 0.7, 0.4].entries()) {
+    out.push(S(k.slabOf(
+      { x: disp.x + 2, y: disp.y + 3 + i * 3.2, w: (disp.w - 4) * frac, d: 1.4, r: 0.3 },
+      BEZEL_H + 0.6, 0.3, P, 0,
+    ), { tone: 'faint', crease: 'none' }))
+  }
   out.push(screws(plan, 4, BEZEL_H, 0.4))
   return part('intake', out.join(''))
 }
@@ -174,19 +181,19 @@ function fans() {
 }
 
 /* ── Heatsink: a block whose fins run the airflow ── */
-function heatsink(plan, z, h, step, ink = 'mid') {
+function heatsink(plan, z, h, step, ink = 'mid', fin = 'faint') {
   const out = [S(k.slabOf(plan, z, h, P, 2, 0.5), { tone: ink })]
   const fins = []
   for (let y = plan.y + step; y < plan.y + plan.d - step / 2; y += step) {
     fins.push(k.segment([plan.x, y, z + h], [plan.x + plan.w, y, z + h], P))
   }
-  out.push(L(fins.join(''), { tone: 'faint' }))
+  out.push(L(fins.join(''), { tone: fin }))
   // the fin stack seen on the end face
   const ends = []
   for (let y = plan.y + step; y < plan.y + plan.d - step / 2; y += step) {
     ends.push(k.segment([plan.x + plan.w, y, z + h], [plan.x + plan.w, y, z], P))
   }
-  out.push(L(ends.join(''), { tone: 'faint' }))
+  out.push(L(ends.join(''), { tone: fin }))
   return out.join('')
 }
 
@@ -197,7 +204,7 @@ function host() {
     const plan = { x: x - CPU.w / 2, y: -CPU.d / 2, w: CPU.w, d: CPU.d, r: 2 }
     // socket frame under the sink
     out.push(S(k.slabOf(k.insetPlan(plan, -3), 0, 3, P, 2, 0.4), { tone: 'lo' }))
-    out.push(heatsink(plan, 3, 16, 3.4))
+    out.push(heatsink(plan, 3, 16, 3.4, 'mid', 'lo'))
     out.push(screws(k.insetPlan(plan, -3), 2, 3, 0.4))
   }
   // DIMM banks: thin boards standing in their slots
@@ -242,7 +249,7 @@ function sleds() {
     const exposed = i === 0
 
     // the module carrier
-    out.push(S(k.slabOf(k.insetPlan(plan, -2), 2.6, 3, P, 2, 0.4), { tone: 'lo' }))
+    out.push(S(k.slabOf(k.insetPlan(plan, -2), 2.6, 3, P, 2, 0.4), { tone: 'mid' }))
 
     // power stages down one flank, as closed cans
     const vrm = []
@@ -266,12 +273,15 @@ function sleds() {
     const z = exposed ? 8 + LIFT : 8
     if (exposed) {
       const guides = []
-      for (const [gx, gy] of k.corners(plan, 3)) {
-        guides.push(k.segment([gx, gy, 8.6], [gx, gy, z], P))
+      const seats = k.corners(k.insetPlan(plan, 2), 0)
+      for (const [gx, gy] of seats) {
+        guides.push(k.segment([gx, gy, 5.6], [gx, gy, z], P))
       }
       out.push(L(guides.join(''), { tone: 'faint' }))
+      // dowels: the lift rides these, and they root the guide lines
+      out.push(D(seats.map(([gx, gy]) => at([gx, gy, 5.6])), { size: 0.45, tone: 'lo' }))
     }
-    out.push(heatsink(plan, z, 22, 3.2))
+    out.push(heatsink(plan, z, 22, 3.2, 'hi', 'lo'))
   }
 
   // NVLink bridges spanning adjacent modules
@@ -333,6 +343,44 @@ function uplink() {
   return part('uplink', out.join(''))
 }
 
+/* ── The path a request takes through the box ── */
+const SHARED = [
+  [BEZEL_X - 26, CH.y + 44, 14],
+  [BEZEL_X + BEZEL_W, CH.y + 44, 14],
+  [FAN_X, CH.y + 44, 14],
+  [FAN_X, 0, 14],
+  [CPU_XS[0], 0, 21],
+  [CPU_XS[1], 0, 21],
+  [BMC.x + 14, 0, 12],
+  [BMC.x + 14, BMC.y + 12, 12],
+]
+
+const LOCAL_PATH = [
+  [BMC.x + 14, BMC.y + 12, 12],
+  [BMC.x + 14, 0, 12],
+  [SLED_XS[0] + SLED.w / 2, 0, 12],
+  [SLED_XS[0] + SLED.w / 2, 0, 9],
+  [SLED_XS[1] + SLED.w / 2, 0, 32],
+  [SLED_XS[2] + SLED.w / 2, 0, 32],
+  [SLED_XS[3] + SLED.w / 2, 0, 32],
+]
+
+const UPLINK_PATH = [
+  [BMC.x + 14, BMC.y + 12, 12],
+  [NIC.x + NIC.w / 2, BMC.y + 12, 12],
+  [NIC.x + NIC.w / 2, NIC.y + 12, 16],
+  [NIC.x + NIC.w, NIC.y + 12, 16],
+  [CH.x + CH.w + 22, NIC.y + 12, 16],
+  [CH.x + CH.w + 22, NIC.y - 16, 16],
+  [CH.x + CH.w + 46, NIC.y - 16, 16],
+  [CH.x + CH.w + 46, NIC.y - 16, 4],
+]
+
+const onScreen = pts => pts.map(pt => {
+  const [sx, sy] = at(pt)
+  return [Math.round(sx * 100) / 100, Math.round(sy * 100) / 100]
+})
+
 /* ── Assemble, back to front ── */
 const art = [
   pan(),
@@ -349,7 +397,7 @@ const art = [
 
 const svg = k.figureSvg({ width: WIDTH, height: HEIGHT, body: art })
 const card = k.plateHtml({
-  fig: 'Fig 2',
+  fig: 'Fig 1',
   title: 'The serving node',
   hint: 'hover a part',
   readout: `${BASE_RPS} req/s`,
@@ -361,3 +409,39 @@ writeFileSync(
   k.pageHtml({ title: 'The serving node', body: card, theme, width: WIDTH, script: kitScript() }),
 )
 console.log('wrote', theme === 'light' ? 'page-light.html' : 'page.html')
+
+if (theme === 'dark') {
+  const mod = [
+    '/* Generated by anatomy/node/build.mjs — do not edit.',
+    ' * Rebuild: node anatomy/node/build.mjs',
+    ' */',
+    '',
+    'export const FIGURE_SVG = ' + JSON.stringify(svg) + ' as const',
+    '',
+    'export const FIGURE_VIEWBOX = { width: ' + WIDTH + ', height: ' + HEIGHT + ' } as const',
+    '',
+    'export const FIGURE_TITLE = ' + JSON.stringify('THE SERVING NODE') + ' as const',
+    'export const FIGURE_FIG = ' + JSON.stringify('FIG 1') + ' as const',
+    'export const FIGURE_READOUT = { base: ' + BASE_RPS + ', spread: ' + RPS_SPREAD + ", unit: 'req/s' } as const",
+    '',
+    'export const FIGURE_BLURB = ' + JSON.stringify(
+      'The hardware the stack runs on: requests land on the front panel, cross the fan wall to the host, and the control plane places them on an accelerator. One cable leaves the chassis for the hosted providers.',
+    ) + ' as const',
+    '',
+    'export type Station = { id: string; name: string; part: string; detail: string; spec: string[]; contains?: string[] }',
+    '',
+    'export const FIGURE_STATIONS: Station[] = ' + JSON.stringify(PARTS, null, 2),
+    '',
+    '/** Screen-space route a request takes through the node. */',
+    'export const FIGURE_ROUTES = {',
+    '  shared: ' + JSON.stringify(onScreen(SHARED)) + ',',
+    '  branches: [',
+    '    { share: ' + LOCAL_SHARE + ', points: ' + JSON.stringify(onScreen(LOCAL_PATH)) + ' },',
+    '    { share: ' + (1 - LOCAL_SHARE).toFixed(2) + ', points: ' + JSON.stringify(onScreen(UPLINK_PATH)) + ' },',
+    '  ],',
+    '} as const',
+    '',
+  ].join('\n')
+  writeFileSync(join(HERE, '..', '..', 'components', 'generated', 'nodeFigure.ts'), mod)
+  console.log('wrote components/generated/nodeFigure.ts')
+}

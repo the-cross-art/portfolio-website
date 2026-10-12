@@ -392,12 +392,12 @@ export default function StackScene() {
   }
 
   return (
-    <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_21rem]">
+    <div className="grid h-full gap-4 lg:grid-cols-[minmax(0,1fr)_21rem]">
       {/* ── Scene ── */}
       <div className="relative">
         <div
           ref={mountRef}
-          className="relative h-[clamp(420px,70vh,760px)] w-full overflow-hidden rounded-2xl border border-black/[0.07] bg-[#fbfbfc] dark:border-white/[0.06] dark:bg-[#07080c]"
+          className="relative h-[clamp(380px,60vh,520px)] w-full overflow-hidden rounded-2xl lg:h-full border border-black/[0.07] bg-[#fbfbfc] dark:border-white/[0.06] dark:bg-[#07080c]"
           style={{ cursor: 'grab' }}
         />
 
@@ -437,7 +437,7 @@ export default function StackScene() {
           Annotations anchored in 3D always collided with the slabs, because an
           isometric slab projects far wider than any sane offset. Out here they
           stay readable, and hovering either side highlights the other. */}
-      <aside className="rounded-2xl border border-black/[0.07] bg-white/60 p-1.5 dark:border-white/[0.06] dark:bg-white/[0.02] lg:max-h-[clamp(420px,70vh,760px)] lg:overflow-y-auto">
+      <aside className="rounded-2xl border border-black/[0.07] bg-white/60 p-1.5 dark:border-white/[0.06] dark:bg-white/[0.02] lg:max-h-full lg:overflow-y-auto">
         {ALL_TIERS.map(tier => {
           const on = active === tier.id
           return (

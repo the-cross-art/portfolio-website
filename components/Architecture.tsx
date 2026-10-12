@@ -310,7 +310,7 @@ function BranchTag({ children }: { children: React.ReactNode }) {
 
 /* Loaded only when someone switches to 3D, so the main page bundle
    never carries three.js. */
-const AnatomyFigure = dynamic(() => import('./AnatomyFigure'), {
+const GpuFigure = dynamic(() => import('./GpuFigure'), {
   ssr: false,
   loading: () => (
     <div className="grid h-[clamp(360px,52vh,640px)] place-items-center rounded-2xl border border-black/[0.07] dark:border-white/[0.06]">
@@ -333,7 +333,7 @@ type View = '2d' | '3d' | 'figure'
 const VIEW_LABEL: Record<View, string> = {
   '2d': '2D',
   '3d': '3D',
-  figure: 'Figure',
+  figure: 'GPU',
 }
 
 function ViewToggle({ view, onChange }: { view: View; onChange: (v: View) => void }) {
@@ -397,12 +397,14 @@ export default function Architecture() {
           </span>
         </div>
 
-        {view === 'figure' ? (
-          <AnatomyFigure />
+        {/* One box for all three views, so switching never resizes the page */}
+        <div className="w-full lg:h-[560px]">
+          {view === 'figure' ? (
+          <GpuFigure />
         ) : view === '3d' ? (
           <StackScene />
         ) : (
-          <div className="rounded-2xl border border-black/[0.07] bg-white/60 p-4 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]">
+          <div className="flex h-full flex-col justify-center overflow-auto rounded-2xl border border-black/[0.07] bg-white/60 p-4 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]">
 
             {/* ── Wide: left to right ── */}
             <div className="hidden lg:block">
@@ -512,9 +514,29 @@ export default function Architecture() {
               </div>
             </div>
           </div>
-        )}
+          )}
+        </div>
 
-        <p className="mt-3 flex items-center justify-center gap-2">
+        <div className="mt-5 flex justify-center">
+          {/* a plain anchor: next/link would pull the client router into the
+              landing bundle for a single cross-page link */}
+          <a
+            href="/anatomy"
+            className="group inline-flex items-center gap-2.5 rounded-xl border border-black/[0.08] bg-white/70 px-4 py-2.5 transition-colors hover:border-cyan-500/40 dark:border-white/[0.08] dark:bg-white/[0.03] dark:hover:border-cyan-400/40"
+          >
+            <span className="font-mono text-[11px] text-slate-700 dark:text-slate-300">
+              anatomy of a token
+            </span>
+            <span className="hidden font-mono text-[11px] text-slate-400 sm:inline dark:text-slate-600">
+              how a request becomes a token, scale by scale
+            </span>
+            <span className="font-mono text-[11px] text-cyan-600 transition-transform group-hover:translate-x-0.5 dark:text-cyan-400">
+              →
+            </span>
+          </a>
+        </div>
+
+        <p className="mt-5 flex items-center justify-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400" />
           <span className="font-mono text-[11px] font-medium text-cyan-600 dark:text-cyan-300">Imran</span>
           <span className="text-slate-300 dark:text-slate-700">·</span>

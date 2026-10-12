@@ -28,3 +28,8 @@ out/
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+# anatomy: verification screenshots and the standalone pages the builds emit
+# (the generated .ts modules ARE committed — the site imports them)
+/shots
+anatomy/*/page.html
+anatomy/*/page-light.html

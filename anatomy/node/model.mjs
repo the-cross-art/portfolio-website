@@ -21,7 +21,7 @@ export const PARTS = [
     name: 'COOLING',
     part: 'fan wall',
     detail: 'Front-to-back airflow across the whole chassis. Fan curve follows GPU inlet temperature, not CPU.',
-    spec: ['6 × counter-rotating', 'front-to-back'],
+    spec: ['5 × counter-rotating', 'front-to-back'],
   },
   {
     id: 'host',
