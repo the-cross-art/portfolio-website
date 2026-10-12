@@ -310,6 +310,15 @@ function BranchTag({ children }: { children: React.ReactNode }) {
 
 /* Loaded only when someone switches to 3D, so the main page bundle
    never carries three.js. */
+const AnatomyFigure = dynamic(() => import('./AnatomyFigure'), {
+  ssr: false,
+  loading: () => (
+    <div className="grid h-[clamp(360px,52vh,640px)] place-items-center rounded-2xl border border-black/[0.07] dark:border-white/[0.06]">
+      <span className="font-mono text-xs text-slate-400 dark:text-slate-700">drawing the figure…</span>
+    </div>
+  ),
+})
+
 const StackScene = dynamic(() => import('./StackScene'), {
   ssr: false,
   loading: () => (
@@ -319,20 +328,22 @@ const StackScene = dynamic(() => import('./StackScene'), {
   ),
 })
 
-function ViewToggle({
-  view,
-  onChange,
-}: {
-  view: '2d' | '3d'
-  onChange: (v: '2d' | '3d') => void
-}) {
+type View = '2d' | '3d' | 'figure'
+
+const VIEW_LABEL: Record<View, string> = {
+  '2d': '2D',
+  '3d': '3D',
+  figure: 'Figure',
+}
+
+function ViewToggle({ view, onChange }: { view: View; onChange: (v: View) => void }) {
   return (
     <div
       role="group"
       aria-label="Diagram view"
       className="flex items-center gap-0.5 rounded-lg border border-black/[0.08] bg-black/[0.03] p-0.5 dark:border-white/[0.08] dark:bg-white/[0.04]"
     >
-      {(['2d', '3d'] as const).map(v => (
+      {(['2d', '3d', 'figure'] as const).map(v => (
         <button
           key={v}
           onClick={() => onChange(v)}
@@ -343,7 +354,7 @@ function ViewToggle({
               : 'text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-300'
           }`}
         >
-          {v === '2d' ? '2D' : '3D'}
+          {VIEW_LABEL[v]}
         </button>
       ))}
     </div>
@@ -351,7 +362,7 @@ function ViewToggle({
 }
 
 export default function Architecture() {
-  const [view, setView] = useState<'2d' | '3d'>('2d')
+  const [view, setView] = useState<View>('2d')
 
   return (
     <section id="architecture" className="px-6 pb-24 pt-4">
@@ -374,7 +385,9 @@ export default function Architecture() {
           </span>
         </div>
 
-        {view === '3d' ? (
+        {view === 'figure' ? (
+          <AnatomyFigure />
+        ) : view === '3d' ? (
           <StackScene />
         ) : (
           <div className="rounded-2xl border border-black/[0.07] bg-white/60 p-4 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]">
