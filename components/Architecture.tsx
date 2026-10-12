@@ -364,6 +364,18 @@ function ViewToggle({ view, onChange }: { view: View; onChange: (v: View) => voi
 export default function Architecture() {
   const [view, setView] = useState<View>('2d')
 
+  /* The heavy views are hidden below lg, so narrowing the window while one
+     is open would strand you in a view with no way back. */
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    const sync = () => {
+      if (!mq.matches) setView(v => (v === '2d' ? v : '2d'))
+    }
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
   return (
     <section id="architecture" className="px-6 pb-24 pt-4">
       <div className="mx-auto max-w-7xl">
