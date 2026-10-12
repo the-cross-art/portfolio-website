@@ -1,6 +1,7 @@
 'use client'
 
 import { Fragment, useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 
 /* ── Packet traffic ──
  * Uneven arrivals on purpose: two close together, then a gap. A fixed
@@ -307,7 +308,51 @@ function BranchTag({ children }: { children: React.ReactNode }) {
   )
 }
 
+/* Loaded only when someone switches to 3D, so the main page bundle
+   never carries three.js. */
+const StackScene = dynamic(() => import('./StackScene'), {
+  ssr: false,
+  loading: () => (
+    <div className="grid h-[clamp(420px,70vh,760px)] place-items-center rounded-2xl border border-black/[0.07] dark:border-white/[0.06]">
+      <span className="font-mono text-xs text-slate-400 dark:text-slate-700">loading 3D…</span>
+    </div>
+  ),
+})
+
+function ViewToggle({
+  view,
+  onChange,
+}: {
+  view: '2d' | '3d'
+  onChange: (v: '2d' | '3d') => void
+}) {
+  return (
+    <div
+      role="group"
+      aria-label="Diagram view"
+      className="flex items-center gap-0.5 rounded-lg border border-black/[0.08] bg-black/[0.03] p-0.5 dark:border-white/[0.08] dark:bg-white/[0.04]"
+    >
+      {(['2d', '3d'] as const).map(v => (
+        <button
+          key={v}
+          onClick={() => onChange(v)}
+          aria-pressed={view === v}
+          className={`rounded-md px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider transition-colors ${
+            view === v
+              ? 'bg-cyan-50 text-cyan-700 dark:bg-cyan-400/15 dark:text-cyan-300'
+              : 'text-slate-500 hover:text-slate-800 dark:text-slate-500 dark:hover:text-slate-300'
+          }`}
+        >
+          {v === '2d' ? '2D' : '3D'}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function Architecture() {
+  const [view, setView] = useState<'2d' | '3d'>('2d')
+
   return (
     <section id="architecture" className="px-6 pb-24 pt-4">
       <div className="mx-auto max-w-7xl">
@@ -323,121 +368,126 @@ export default function Architecture() {
           <span className="font-mono text-[11px] text-slate-400 dark:text-slate-600">
             production topology
           </span>
-          <span className="ml-auto">
-            <Throughput />
+          <span className="ml-auto flex items-center gap-3">
+            {view === '2d' && <Throughput />}
+            <ViewToggle view={view} onChange={setView} />
           </span>
         </div>
 
-        <div className="rounded-2xl border border-black/[0.07] bg-white/60 p-4 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]">
+        {view === '3d' ? (
+          <StackScene />
+        ) : (
+          <div className="rounded-2xl border border-black/[0.07] bg-white/60 p-4 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]">
 
-          {/* ── Wide: left to right ── */}
-          <div className="hidden lg:block">
-            <div className="flex items-stretch gap-0">
-              <div className="flex w-[168px] shrink-0 flex-col justify-center gap-2">
-                <Stage label={CLIENTS.label} lines={CLIENTS.lines} />
-                <VEdge delay={0} color="blue" h={18} />
-                <Stage label={EDGE.label} lines={EDGE.lines} variant="network" />
-              </div>
-              <HEdge delay={0.3} color="blue" w={32} />
-
-              <div className="w-[152px] shrink-0 self-center">
-                <Stage label={GATEWAY.label} lines={GATEWAY.lines} variant="network" />
-              </div>
-              <HEdge delay={0.55} w={22} />
-
-              <div className="w-[136px] shrink-0 self-center">
-                <Stage label={ROUTER.label} lines={ROUTER.lines} variant="serving" />
-              </div>
-              <HEdge delay={0.8} w={18} />
-              <Fork />
-
-              {/* the router picks one of two routes */}
-              <div className="flex min-w-0 flex-1 flex-col gap-3">
-                <div>
-                  <BranchTag>frontier</BranchTag>
-                  <div className="mt-1">
-                    <Stage label={FRONTIER.label} lines={FRONTIER.lines} variant="network" />
-                  </div>
+            {/* ── Wide: left to right ── */}
+            <div className="hidden lg:block">
+              <div className="flex items-stretch gap-0">
+                <div className="flex w-[168px] shrink-0 flex-col justify-center gap-2">
+                  <Stage label={CLIENTS.label} lines={CLIENTS.lines} />
+                  <VEdge delay={0} color="blue" h={18} />
+                  <Stage label={EDGE.label} lines={EDGE.lines} variant="network" />
                 </div>
+                <HEdge delay={0.3} color="blue" w={32} />
 
-                <div>
-                  <BranchTag>self-hosted</BranchTag>
-                  <div className="mt-1">
-                    <Zone label="private network (vpc)">
-                      <Zone label="kubernetes cluster" accent>
-                        <div className="flex items-stretch gap-0">
-                          {SELF_HOSTED.map((node, i) => (
-                            <Fragment key={node.kind === 'split' ? 'split' : node.label}>
-                              {i > 0 && <HEdge delay={1.05 + i * 0.25} w={20} />}
-                              <ChainStage node={node} vertical={false} />
-                            </Fragment>
-                          ))}
-                        </div>
+                <div className="w-[152px] shrink-0 self-center">
+                  <Stage label={GATEWAY.label} lines={GATEWAY.lines} variant="network" />
+                </div>
+                <HEdge delay={0.55} w={22} />
+
+                <div className="w-[136px] shrink-0 self-center">
+                  <Stage label={ROUTER.label} lines={ROUTER.lines} variant="serving" />
+                </div>
+                <HEdge delay={0.8} w={18} />
+                <Fork />
+
+                {/* the router picks one of two routes */}
+                <div className="flex min-w-0 flex-1 flex-col gap-3">
+                  <div>
+                    <BranchTag>frontier</BranchTag>
+                    <div className="mt-1">
+                      <Stage label={FRONTIER.label} lines={FRONTIER.lines} variant="network" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <BranchTag>self-hosted</BranchTag>
+                    <div className="mt-1">
+                      <Zone label="private network (vpc)">
+                        <Zone label="kubernetes cluster" accent>
+                          <div className="flex items-stretch gap-0">
+                            {SELF_HOSTED.map((node, i) => (
+                              <Fragment key={node.kind === 'split' ? 'split' : node.label}>
+                                {i > 0 && <HEdge delay={1.05 + i * 0.25} w={20} />}
+                                <ChainStage node={node} vertical={false} />
+                              </Fragment>
+                            ))}
+                          </div>
+                        </Zone>
+                        <VEdge delay={0.2} h={24} />
+                        <Stage label={GPU.label} lines={GPU.lines} variant="compute" glow />
                       </Zone>
-                      <VEdge delay={0.2} h={24} />
-                      <Stage label={GPU.label} lines={GPU.lines} variant="compute" glow />
-                    </Zone>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* ── Narrow: top to bottom, same topology ── */}
-          <div className="lg:hidden">
-            <Stage label={CLIENTS.label} lines={CLIENTS.lines} />
-            <VEdge delay={0} color="blue" h={22} />
-            <Stage label={EDGE.label} lines={EDGE.lines} variant="network" />
-            <VEdge delay={0.3} color="blue" h={22} />
-            <Stage label={GATEWAY.label} lines={GATEWAY.lines} variant="network" />
-            <VEdge delay={0.55} h={22} />
-            <Stage label={ROUTER.label} lines={ROUTER.lines} variant="serving" />
-            <VEdge delay={0.8} h={22} />
+            {/* ── Narrow: top to bottom, same topology ── */}
+            <div className="lg:hidden">
+              <Stage label={CLIENTS.label} lines={CLIENTS.lines} />
+              <VEdge delay={0} color="blue" h={22} />
+              <Stage label={EDGE.label} lines={EDGE.lines} variant="network" />
+              <VEdge delay={0.3} color="blue" h={22} />
+              <Stage label={GATEWAY.label} lines={GATEWAY.lines} variant="network" />
+              <VEdge delay={0.55} h={22} />
+              <Stage label={ROUTER.label} lines={ROUTER.lines} variant="serving" />
+              <VEdge delay={0.8} h={22} />
 
-            <div className="mb-1"><BranchTag>frontier</BranchTag></div>
-            <Stage label={FRONTIER.label} lines={FRONTIER.lines} variant="network" />
+              <div className="mb-1"><BranchTag>frontier</BranchTag></div>
+              <Stage label={FRONTIER.label} lines={FRONTIER.lines} variant="network" />
 
-            <div className="mb-1 mt-4"><BranchTag>self-hosted</BranchTag></div>
-            <Zone label="private network (vpc)">
-              <Zone label="kubernetes cluster" accent>
-                {SELF_HOSTED.map((node, i) => (
-                  <Fragment key={node.kind === 'split' ? 'split' : node.label}>
-                    {i > 0 && <VEdge delay={1.05 + i * 0.25} h={22} />}
-                    <ChainStage node={node} vertical />
-                  </Fragment>
-                ))}
+              <div className="mb-1 mt-4"><BranchTag>self-hosted</BranchTag></div>
+              <Zone label="private network (vpc)">
+                <Zone label="kubernetes cluster" accent>
+                  {SELF_HOSTED.map((node, i) => (
+                    <Fragment key={node.kind === 'split' ? 'split' : node.label}>
+                      {i > 0 && <VEdge delay={1.05 + i * 0.25} h={22} />}
+                      <ChainStage node={node} vertical />
+                    </Fragment>
+                  ))}
+                </Zone>
+                <VEdge delay={0.2} h={22} />
+                <Stage label={GPU.label} lines={GPU.lines} variant="compute" glow />
               </Zone>
-              <VEdge delay={0.2} h={22} />
-              <Stage label={GPU.label} lines={GPU.lines} variant="compute" glow />
-            </Zone>
-          </div>
+            </div>
 
-          {/* observability spans every tier rather than sitting in the path */}
-          <div className="mt-4 rounded-xl border border-dashed border-black/[0.10] px-4 py-3 dark:border-white/[0.10]">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-500 dark:bg-green-400" />
-              <span className="font-mono text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-500">
-                Observability
-              </span>
-              <span className="ml-auto font-mono text-[8px] text-slate-400 dark:text-slate-700">
-                instruments every tier above
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-4">
-              {[
-                ['metrics', 'Prometheus'],
-                ['dashboards', 'Grafana'],
-                ['logs', 'CloudWatch'],
-                ['traces', 'OpenTelemetry'],
-              ].map(([kind, tool]) => (
-                <div key={kind}>
-                  <div className="font-mono text-[8px] text-slate-400 dark:text-slate-600">{kind}</div>
-                  <div className="font-mono text-[10px] text-slate-600 dark:text-slate-400">{tool}</div>
-                </div>
-              ))}
+            {/* observability spans every tier rather than sitting in the path */}
+            <div className="mt-4 rounded-xl border border-dashed border-black/[0.10] px-4 py-3 dark:border-white/[0.10]">
+              <div className="mb-2 flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-green-500 dark:bg-green-400" />
+                <span className="font-mono text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-500">
+                  Observability
+                </span>
+                <span className="ml-auto font-mono text-[8px] text-slate-400 dark:text-slate-700">
+                  instruments every tier above
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-4">
+                {[
+                  ['metrics', 'Prometheus'],
+                  ['dashboards', 'Grafana'],
+                  ['logs', 'CloudWatch'],
+                  ['traces', 'OpenTelemetry'],
+                ].map(([kind, tool]) => (
+                  <div key={kind}>
+                    <div className="font-mono text-[8px] text-slate-400 dark:text-slate-600">{kind}</div>
+                    <div className="font-mono text-[10px] text-slate-600 dark:text-slate-400">{tool}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         <p className="mt-3 flex items-center justify-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400" />
