@@ -97,13 +97,17 @@ function plinth() {
 
   out.push(S(k.slabOf(PLINTH, PLINTH_Z, PLINTH_H, P, 6, 1.4), { tone: 'lo' }))
 
-  // heat fins down the long sides — the GPUs' own surface
+  // heat fins down the long flanks. The top end lands on the plinth
+  // outline; the underside has no stroke, so the bottom ramps out.
   const fins = []
-  for (let x = PLINTH.x + 10; x <= PLINTH.x + PLINTH.w - 10; x += 5) {
-    fins.push(k.segment([x, PLINTH.y + 0.4, PLINTH_Z + 2], [x, PLINTH.y + 0.4, -3], P))
-    fins.push(k.segment([x, PLINTH.y + PLINTH.d - 0.4, PLINTH_Z + 2], [x, PLINTH.y + PLINTH.d - 0.4, -3], P))
+  for (let x = PLINTH.x + 20; x <= PLINTH.x + PLINTH.w - 20; x += 5) {
+    for (const y of [PLINTH.y, PLINTH.y + PLINTH.d]) {
+      fins.push(
+        k.fadeLineSvg([at([x, y, 0]), at([x, y, PLINTH_Z + 2])], { fade: [0, 1], tone: 'faint' }),
+      )
+    }
   }
-  out.push(L(fins.join(''), { tone: 'faint' }))
+  out.push(fins.join(''))
 
   // top groove and corner screws
   out.push(L(k.planOutline(k.insetPlan(PLINTH, 5), 0, P), { tone: 'faint' }))
@@ -114,7 +118,7 @@ function plinth() {
   // ruler strip along the front edge
   const strip = { x: PLINTH.x + 14, y: PLINTH.y + PLINTH.d - 11, w: PLINTH.w - 28, d: 7, r: 1 }
   out.push(S(k.slabOf(strip, 0, 0.6, P, 3), { tone: 'lo', crease: 'none' }))
-  const t = k.topTicks(strip.x + 4, strip.x + strip.w - 4, 5, 5, strip.y + 0.9, 0.6, [2, 3.8], P)
+  const t = k.topTicks(strip.x + 4, strip.x + strip.w - 4, 5, 5, strip.y, 0.6, [strip.d, strip.d], P)
   out.push(L(t.minor, { tone: 'lo' }), L(t.major, { tone: 'mid' }))
   out.push(D([at([strip.x + 2, strip.y + 3.5, 0.6]), at([strip.x + strip.w - 2, strip.y + 3.5, 0.6])], { size: 0.45 }))
 
@@ -146,8 +150,8 @@ function rackFrame(front) {
     out.push(S(k.slabOf(RACK, RACK_Z, 3, P, 4, 0.5), { tone: 'lo' }))
     // rack unit rules on the back rail
     const rules = []
-    for (let z = RACK_Z + 10; z < RACK_TOP; z += 9) {
-      rules.push(k.segment([RACK.x + 3, RACK.y + 1, z], [RACK.x + RACK.w - 3, RACK.y + 1, z], P))
+    for (let z = RACK_Z + 8; z < RACK_TOP + 8; z += 9) {
+      rules.push(k.segment([RACK.x - 4, RACK.y - 4, z], [RACK.x + RACK.w + 4, RACK.y - 4, z], P))
     }
     out.push(L(rules.join(''), { tone: 'faint' }))
   }
@@ -184,7 +188,7 @@ function drums() {
     out.push(S(k.cylinder(x, DRUM_Y, DRUM_R, DRUM_Z - 11, 22, P, 36), { tone: 'mid' }))
     // vanes as side rings: the drum's own surface, not noise
     out.push(L([DRUM_Z - 5, DRUM_Z + 5].map(z => k.sideArc(x, DRUM_Y, DRUM_R, z, P, 22)).join(''), { tone: 'faint' }))
-    out.push(L(k.knurl(x, DRUM_Y, DRUM_R, DRUM_Z - 8, DRUM_Z + 8, 30, P), { tone: 'lo' }))
+    out.push(L(k.knurl(x, DRUM_Y, DRUM_R, DRUM_Z - 11, DRUM_Z + 11, 30, P), { tone: 'lo' }))
     // end cap and hub
     out.push(S(k.cylinder(x, DRUM_Y, 4.2, DRUM_Z + 11, 2.4, P, 20), { tone: 'hi' }))
     out.push(D([at([x, DRUM_Y, DRUM_Z + 13.4])], { size: 0.5, tone: 'hi' }))
@@ -201,7 +205,7 @@ function carriage() {
     out.push(S(k.slabOf({ x, y: -5, w: 4, d: 10, r: 1 }, RAIL_Z, 7, P, 2, 0.5), { tone: 'mid' }))
     out.push(D([at([x + 2, 0, RAIL_Z + 7])], { size: 0.45 }))
   }
-  const ticks = k.topTicks(RAIL_FROM + 3, RAIL_TO - 3, 6, 4, 3.4, RAIL_Z + 3.4, [1.8, 3.2], P)
+  const ticks = k.topTicks(RAIL_FROM + 4, RAIL_TO - 4, 6, 4, -3, RAIL_Z + 3.4, [6, 6], P)
   out.push(L(ticks.minor, { tone: 'lo' }), L(ticks.major, { tone: 'mid' }))
 
   // the carriage, on bushings
@@ -264,11 +268,11 @@ function grate() {
   out.push(S(k.slabOf(plan, GRATE_Z, 3.5, P, 2, 0.5), { tone: 'mid' }))
   // the mesh, ending on the frame at both ends
   const mesh = []
-  for (let x = plan.x + 4; x <= plan.x + plan.w - 4; x += 3.6) {
-    mesh.push(k.segment([x, plan.y + 2, GRATE_Z + 3.5], [x, plan.y + plan.d - 2, GRATE_Z + 3.5], P))
+  for (let x = plan.x + 3; x <= plan.x + plan.w - 3; x += 3.6) {
+    mesh.push(k.segment([x, plan.y, GRATE_Z + 3.5], [x, plan.y + plan.d, GRATE_Z + 3.5], P))
   }
-  for (let y = plan.y + 4; y <= plan.y + plan.d - 4; y += 3.6) {
-    mesh.push(k.segment([plan.x + 2, y, GRATE_Z + 3.5], [plan.x + plan.w - 2, y, GRATE_Z + 3.5], P))
+  for (let y = plan.y + 3; y <= plan.y + plan.d - 3; y += 3.6) {
+    mesh.push(k.segment([plan.x, y, GRATE_Z + 3.5], [plan.x + plan.w, y, GRATE_Z + 3.5], P))
   }
   out.push(L(mesh.join(''), { tone: 'faint' }))
   out.push(L(k.planOutline(k.insetPlan(plan, 2), GRATE_Z + 3.5, P), { tone: 'lo' }))
@@ -288,7 +292,8 @@ function manifold() {
   const gx = [MANI.x + 9, MANI.x + 19, MANI.x + 29]
   for (const x of gx) {
     out.push(S(k.cylinder(x, 0, 5.2, MANI_Z + MANI_H, 2.6, P, 24), { tone: 'hi' }))
-    out.push(L(k.radialTicks(x, 0, 3.2, 12, 3, MANI_Z + MANI_H + 2.6, [1.1, 1.9], P), { tone: 'lo' }))
+    out.push(L(k.ring(x, 0, 3.2, MANI_Z + MANI_H + 2.6, P, 20), { tone: 'faint' }))
+    out.push(L(k.radialTicks(x, 0, 3.2, 12, 3, MANI_Z + MANI_H + 2.6, [2, 2], P), { tone: 'lo' }))
     out.push(D([at([x, 0, MANI_Z + MANI_H + 2.6])], { size: 0.45, tone: 'hi' }))
   }
 
@@ -356,11 +361,6 @@ function frontierBox() {
   // three stacked units, nothing of ours inside
   out.push(`<path class="iso-halo" d="${k.haloOf(OFFSITE, 0, OFFSITE_H, P)}"/>`)
   out.push(S(k.slabOf(OFFSITE, OFFSITE_Z, OFFSITE_H, P, 4, 1), { tone: 'lo' }))
-  const rules = []
-  for (let z = 8; z < OFFSITE_H; z += 9) {
-    rules.push(k.segment([OFFSITE.x + 3, OFFSITE.y + OFFSITE.d - 0.4, z], [OFFSITE.x + OFFSITE.w - 3, OFFSITE.y + OFFSITE.d - 0.4, z], P))
-  }
-  out.push(L(rules.join(''), { tone: 'faint' }))
   out.push(L(k.planOutline(k.insetPlan(OFFSITE, 4), OFFSITE_H, P), { tone: 'faint' }))
   out.push(D(k.corners(OFFSITE, 6).map(([x, y]) => at([x, y, OFFSITE_H])), { size: 0.45 }))
   return station('frontier', out.join(''))
