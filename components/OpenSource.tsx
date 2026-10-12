@@ -4,7 +4,6 @@ const contributions = [
     repo: 'huggingface/transformers',
     what: 'Decoder attention masking fix',
     pr: '#49135',
-    status: 'merged' as const,
     url: 'https://github.com/huggingface/transformers/pull/49135',
     avatar: '/oss/huggingface.png',
   },
@@ -13,18 +12,10 @@ const contributions = [
     repo: 'OpenNMT/CTranslate2',
     what: 'Model architecture support in the runtime',
     pr: '#2103',
-    status: 'in review' as const,
     url: 'https://github.com/OpenNMT/CTranslate2/pull/2103',
     avatar: '/oss/OpenNMT.png',
   },
 ]
-
-const statusStyle = {
-  merged:
-    'bg-violet-50 dark:bg-violet-400/10 border-violet-200 dark:border-violet-400/30 text-violet-700 dark:text-violet-300',
-  'in review':
-    'bg-amber-50 dark:bg-amber-400/10 border-amber-200 dark:border-amber-400/30 text-amber-700 dark:text-amber-300',
-}
 
 export default function OpenSource() {
   return (
@@ -66,9 +57,6 @@ export default function OpenSource() {
                 </div>
                 <div className="flex items-center gap-2 mt-2">
                   <span className="font-mono text-[10px] text-slate-400 dark:text-slate-600">{c.pr}</span>
-                  <span className={`px-2 py-0.5 rounded border font-mono text-[10px] ${statusStyle[c.status]}`}>
-                    {c.status}
-                  </span>
                 </div>
               </div>
 
