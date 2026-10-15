@@ -1,4 +1,4 @@
-import HeroScatter from './HeroScatter'
+import HeroBackdrop from './HeroBackdrop'
 
 const LINKS = [
   { label: '→ view work',  href: '#projects', primary: true },
@@ -13,7 +13,7 @@ export default function Hero() {
       id="home"
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pb-16 pt-24"
     >
-      <HeroScatter />
+      <HeroBackdrop />
 
       <div className="relative z-10 mx-auto max-w-2xl text-center">
         <p className="font-mono text-sm text-slate-400 dark:text-slate-600">
