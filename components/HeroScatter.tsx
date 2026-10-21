@@ -129,7 +129,19 @@ function FadingNote() {
 
 export default function HeroScatter() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 hidden xl:block">
+    /* These are decoration drawn in the same card style as the real Projects
+       and Writing cards, and the lower two sit a few dozen pixels above actual
+       content — close enough that a reader takes them for content. Dissolving
+       the layer toward the bottom keeps them as atmosphere and hands off to
+       the section below the way the character field does. */
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 hidden opacity-90 xl:block"
+      style={{
+        WebkitMaskImage: 'linear-gradient(to bottom, black 42%, transparent 88%)',
+        maskImage: 'linear-gradient(to bottom, black 42%, transparent 88%)',
+      }}
+    >
       <ReadingNote />
       <BookStack />
       <PaperCard />

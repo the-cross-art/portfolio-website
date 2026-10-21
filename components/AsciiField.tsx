@@ -117,7 +117,16 @@ export default function AsciiField() {
       // a phone has far less room around the text, so the quiet core has to
       // take a larger share of it or the field crowds the heading
       const narrow = width < 640
-      return smoothstep(narrow ? 0.46 : 0.26, 0.98, d) * (narrow ? 0.9 : 0.85) + (narrow ? 0.1 : 0.15)
+      const core =
+        smoothstep(narrow ? 0.46 : 0.26, 0.98, d) * (narrow ? 0.9 : 0.85) + (narrow ? 0.1 : 0.15)
+
+      /* The radial term above is loudest at the frame, which puts the densest
+         part of the field exactly where the hero hands off to the section
+         below — and the canvas edge then cuts it dead. Fade it out top and
+         bottom so it dissolves into the page instead, with the longer ramp at
+         the bottom, where something follows it. */
+      const t = cy / height
+      return core * smoothstep(0, 0.14, t) * smoothstep(0, 0.3, 1 - t)
     }
 
     const draw = (now: number) => {
