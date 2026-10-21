@@ -1,11 +1,14 @@
 /**
  * Writing section — Medium articles.
  *
- * To add real screenshots:
- *   1. Take a screenshot of each article (1200×630 recommended)
- *   2. Save as: public/writing/article-1.png ... public/writing/article-5.png
- *   3. Set image: '/writing/article-N.png' in the articles array below.
- *   4. The component will use the real image when `image` is set.
+ * Hand-maintained: Medium returns 403 to every direct fetch, so nothing here
+ * can be pulled at build time. The one thing that does answer is the RSS feed
+ * at medium.com/feed/@imrannaz326, which carries each post's title, date and
+ * hero image — use it when adding a post, rather than guessing.
+ *
+ * Thumbnails are public/writing/article-N.jpg, numbered to match this list.
+ * Keep them in step: a banner on the wrong card is worse than no banner,
+ * because it quietly claims the piece is about something else.
  */
 
 const articles = [
@@ -15,7 +18,7 @@ const articles = [
     date: 'Aug 23, 2026',
     url: 'https://medium.com/@imrannaz326/serving-llms-through-the-gpu-drought-capacity-aware-inference-with-automatic-instance-type-c376c104a4fb',
     tags: ['LLM Serving', 'GPU', 'Infrastructure'],
-    readTime: '8 min',
+    readTime: '18 min',
     image: '/writing/article-1.jpg',
     gradient: 'from-cyan-950 via-cyan-900 to-slate-900 dark:from-cyan-950 dark:via-[#0c1a1f] dark:to-[#0a0a0f]',
     accentText: 'text-cyan-400 dark:text-cyan-300',
@@ -26,41 +29,52 @@ const articles = [
     date: 'Jul 27, 2026',
     url: 'https://medium.com/@imrannaz326/serving-large-language-models-on-kubernetes-at-scale-connection-level-overload-protection-for-gpu-787111226f98',
     tags: ['Kubernetes', 'LLM', 'GPU Inference'],
-    readTime: '10 min',
+    readTime: '19 min',
     image: '/writing/article-2.jpg',
     gradient: 'from-blue-950 via-blue-900 to-slate-900 dark:from-blue-950 dark:via-[#0b0f1a] dark:to-[#0a0a0f]',
     accentText: 'text-blue-400 dark:text-blue-300',
   },
   {
     n: '03',
+    title: 'The Hidden Cost of Process-Level GPU Concurrency: Why Your GPU Inference Server Wastes 75% of VRAM',
+    date: 'May 10, 2026',
+    url: 'https://medium.com/@imrannaz326/the-hidden-cost-of-process-level-gpu-concurrency-why-your-gpu-inference-server-wastes-75-of-vram-e5100db5d1e8',
+    tags: ['GPU', 'VRAM', 'Concurrency'],
+    readTime: '10 min',
+    image: '/writing/article-3.jpg',
+    gradient: 'from-rose-950 via-rose-900 to-slate-900 dark:from-rose-950 dark:via-[#1a0a0f] dark:to-[#0a0a0f]',
+    accentText: 'text-rose-400 dark:text-rose-300',
+  },
+  {
+    n: '04',
     title: "I Opened the GPU Black Box For LLM Inference. Here's What I Found!",
     date: 'Apr 24, 2026',
     url: 'https://medium.com/@imrannaz326/i-opened-the-gpu-black-box-for-llm-inference-heres-what-i-found-0463f22e11aa',
     tags: ['GPU', 'LLM', 'Deep Dive'],
-    readTime: '12 min',
-    image: '/writing/article-3.jpg',
+    readTime: '10 min',
+    image: '/writing/article-4.jpg',
     gradient: 'from-violet-950 via-violet-900 to-slate-900 dark:from-violet-950 dark:via-[#10091a] dark:to-[#0a0a0f]',
     accentText: 'text-violet-400 dark:text-violet-300',
   },
   {
-    n: '04',
+    n: '05',
     title: 'How I Built a Smart Semantic Search for Quick Commerce Using LLMs',
     date: 'May 18, 2025',
     url: 'https://medium.com/@imrannaz326/how-i-built-a-smart-semantic-search-for-quick-commerce-using-llms-bca4777f2766',
     tags: ['LLM', 'Semantic Search', 'NLP'],
-    readTime: '7 min',
-    image: '/writing/article-4.jpg',
+    readTime: '4 min',
+    image: '/writing/article-5.jpg',
     gradient: 'from-emerald-950 via-emerald-900 to-slate-900 dark:from-emerald-950 dark:via-[#071510] dark:to-[#0a0a0f]',
     accentText: 'text-emerald-400 dark:text-emerald-300',
   },
   {
-    n: '05',
+    n: '06',
     title: 'Seamless Integration: Deploying FastAPI ML Inference Code with SageMaker BYOC + Nginx',
     date: 'Jun 26, 2023',
     url: 'https://medium.com/@imrannaz326/seamless-integration-deploying-fastapi-ml-inference-code-with-sagemaker-byoc-nginx-6802103f7a2c',
     tags: ['SageMaker', 'FastAPI', 'MLOps'],
-    readTime: '9 min',
-    image: '/writing/article-5.jpg',
+    readTime: '5 min',
+    image: '/writing/article-6.jpg',
     gradient: 'from-amber-950 via-amber-900 to-slate-900 dark:from-amber-950 dark:via-[#1a1000] dark:to-[#0a0a0f]',
     accentText: 'text-amber-400 dark:text-amber-300',
   },
