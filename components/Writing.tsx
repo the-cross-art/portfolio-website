@@ -6,7 +6,10 @@
  * at medium.com/feed/@imrannaz326, which carries each post's title, date and
  * hero image — use it when adding a post, rather than guessing.
  *
- * Thumbnails are public/writing/article-N.jpg, numbered to match this list.
+ * Thumbnails are public/writing/article-N.jpg, numbered to match this list,
+ * and all of them are 1200x675 so the card's 16:9 box crops nothing. Pad a
+ * new one to that ratio with its own edge colour rather than letting
+ * object-cover slice the title off the top.
  * Keep them in step: a banner on the wrong card is worse than no banner,
  * because it quietly claims the piece is about something else.
  */
@@ -105,7 +108,7 @@ export default function Writing() {
               className="group border border-black/[0.07] dark:border-white/[0.07] rounded-2xl overflow-hidden bg-white dark:bg-white/[0.02] hover:border-black/[0.12] dark:hover:border-white/[0.12] card-tilt hover:shadow-xl dark:hover:shadow-none flex flex-col"
             >
               {/* Image or gradient placeholder */}
-              <div className="relative h-32 overflow-hidden shrink-0">
+              <div className="relative aspect-[16/9] overflow-hidden shrink-0">
                 {a.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
