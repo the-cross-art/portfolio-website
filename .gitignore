@@ -33,3 +33,6 @@ out/
 /shots
 anatomy/*/page.html
 anatomy/*/page-light.html
+
+# editor: personal colour customisations, not project config
+/.vscode
