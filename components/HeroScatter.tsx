@@ -1,5 +1,13 @@
 /**
- * Decorative scatter behind the hero — reading notes, books, a paper.
+ * Decorative scatter behind the hero — a reading note and some book spines.
+ *
+ * There were two more pieces down the lower half, an arXiv paper card and a
+ * capacity note. They were drawn in the same card style as the real Projects
+ * and Writing cards and bottomed out a few dozen pixels above actual content,
+ * so a reader took someone else's paper for one of ours and spent attention
+ * on it before reaching the work. Decoration that reads as content is worse
+ * than no decoration, so the lower half is deliberately empty now — it also
+ * lets the hero hand off cleanly, the way the character field does.
  * Purely atmospheric: aria-hidden, sits behind the text, and only appears
  * on xl+ where there is genuinely room beside a centred column.
  */
@@ -75,77 +83,11 @@ function BookStack() {
   )
 }
 
-function PaperCard() {
-  return (
-    <div
-      className="absolute left-[5%] bottom-[10%] w-[235px] select-none opacity-70"
-      style={{ transform: 'rotate(-5deg)' }}
-    >
-      <div className="rounded-2xl border border-black/[0.08] dark:border-white/[0.08] bg-white dark:bg-[#12141a] p-4 shadow-xl dark:shadow-none">
-        <span className="inline-block rounded bg-[#b31b1b] px-1.5 py-0.5 font-mono text-[9px] text-white">
-          arXiv
-        </span>
-        <div className="mt-2.5 text-[13px] font-semibold leading-snug text-slate-800 dark:text-slate-200">
-          Efficient Memory Management for LLM Serving with PagedAttention
-        </div>
-        <div className="mt-1.5 font-mono text-[9px] text-slate-400 dark:text-slate-600">
-          Kwon et al. · 2023
-        </div>
-        <div className="mt-3 space-y-1.5">
-          <div className="h-1 w-full rounded bg-black/[0.06] dark:bg-white/[0.06]" />
-          <div className="h-1 w-[82%] rounded bg-black/[0.06] dark:bg-white/[0.06]" />
-          <div className="h-1 w-[64%] rounded bg-black/[0.06] dark:bg-white/[0.06]" />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function FadingNote() {
-  return (
-    <div
-      className="absolute right-[6%] bottom-[7%] w-[225px] select-none"
-      style={{
-        transform: 'rotate(4deg)',
-        maskImage: 'linear-gradient(to bottom, black 25%, transparent 100%)',
-        WebkitMaskImage: 'linear-gradient(to bottom, black 25%, transparent 100%)',
-      }}
-    >
-      <div className="rounded-2xl border border-black/[0.07] dark:border-white/[0.07] bg-white dark:bg-[#12141a] p-4">
-        <div className="font-mono text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-600">
-          Capacity note · 04
-        </div>
-        <div className="mt-2 text-[14px] font-semibold leading-snug text-slate-800 dark:text-slate-200">
-          Find the first saturating resource
-        </div>
-        <p className="mt-2 text-[11px] leading-relaxed text-slate-500 dark:text-slate-600">
-          Throughput stops responding to replicas once KV cache is the binding
-          constraint. Measure before scaling out.
-        </p>
-      </div>
-    </div>
-  )
-}
-
 export default function HeroScatter() {
   return (
-    /* These are decoration drawn in the same card style as the real Projects
-       and Writing cards, and the lower two sit a few dozen pixels above actual
-       content — close enough that a reader takes them for content. Dissolving
-       the layer toward the bottom keeps them as atmosphere and hands off to
-       the section below the way the character field does. */
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 hidden opacity-90 xl:block"
-      style={{
-        WebkitMaskImage: 'linear-gradient(to bottom, black 42%, transparent 88%)',
-        maskImage: 'linear-gradient(to bottom, black 42%, transparent 88%)',
-      }}
-    >
+    <div aria-hidden className="pointer-events-none absolute inset-0 hidden xl:block">
       <ReadingNote />
       <BookStack />
-      <PaperCard />
-      <FadingNote />
     </div>
   )
 }
