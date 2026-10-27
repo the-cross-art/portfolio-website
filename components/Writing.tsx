@@ -6,10 +6,15 @@
  * at medium.com/feed/@imrannaz326, which carries each post's title, date and
  * hero image — use it when adding a post, rather than guessing.
  *
- * Thumbnails are public/writing/article-N.jpg, numbered to match this list,
- * and all of them are 1200x675 so the card's 16:9 box crops nothing. Pad a
- * new one to that ratio with its own edge colour rather than letting
- * object-cover slice the title off the top.
+ * Thumbnails are named after their article, not their position. They used to
+ * be article-1..N, which meant inserting a post rewrote the contents of every
+ * stable URL below it: caches kept serving the old bytes and every card showed
+ * the previous article's banner. A slug never moves, and changing an image
+ * changes its URL, so nothing can go stale.
+ *
+ * All of them are 1200x675 so the card's 16:9 box crops nothing. Pad a new one
+ * to that ratio with its own edge colour rather than letting object-cover
+ * slice the title off the top.
  * Keep them in step: a banner on the wrong card is worse than no banner,
  * because it quietly claims the piece is about something else.
  */
@@ -17,67 +22,78 @@
 const articles = [
   {
     n: '01',
+    title: 'Inside DeepInfer: How DeepSeek Serves 155 Trillion Tokens a Day',
+    date: 'Oct 22, 2026',
+    url: 'https://medium.com/@imrannaz326/inside-deepinfer-how-deepseek-serves-155-trillion-tokens-a-day-a681b6591a41',
+    tags: ['DeepSeek', 'Inference Engine', 'GPU Kernels'],
+    readTime: '22 min',
+    image: '/writing/deepinfer.jpg',
+    gradient: 'from-sky-950 via-sky-900 to-slate-900 dark:from-sky-950 dark:via-[#071320] dark:to-[#0a0a0f]',
+    accentText: 'text-sky-400 dark:text-sky-300',
+  },
+  {
+    n: '02',
     title: 'Serving LLMs Through the GPU Drought: Capacity-Aware Inference with Automatic Instance-Type Fallback',
     date: 'Aug 23, 2026',
     url: 'https://medium.com/@imrannaz326/serving-llms-through-the-gpu-drought-capacity-aware-inference-with-automatic-instance-type-c376c104a4fb',
     tags: ['LLM Serving', 'GPU', 'Infrastructure'],
     readTime: '18 min',
-    image: '/writing/article-1.jpg',
+    image: '/writing/gpu-drought.jpg',
     gradient: 'from-cyan-950 via-cyan-900 to-slate-900 dark:from-cyan-950 dark:via-[#0c1a1f] dark:to-[#0a0a0f]',
     accentText: 'text-cyan-400 dark:text-cyan-300',
   },
   {
-    n: '02',
+    n: '03',
     title: 'Serving Large Language Models on Kubernetes at Scale: Connection-Level Overload Protection for GPU Inference',
     date: 'Jul 27, 2026',
     url: 'https://medium.com/@imrannaz326/serving-large-language-models-on-kubernetes-at-scale-connection-level-overload-protection-for-gpu-787111226f98',
     tags: ['Kubernetes', 'LLM', 'GPU Inference'],
     readTime: '19 min',
-    image: '/writing/article-2.jpg',
+    image: '/writing/overload-protection.jpg',
     gradient: 'from-blue-950 via-blue-900 to-slate-900 dark:from-blue-950 dark:via-[#0b0f1a] dark:to-[#0a0a0f]',
     accentText: 'text-blue-400 dark:text-blue-300',
   },
   {
-    n: '03',
+    n: '04',
     title: 'The Hidden Cost of Process-Level GPU Concurrency: Why Your GPU Inference Server Wastes 75% of VRAM',
     date: 'May 10, 2026',
     url: 'https://medium.com/@imrannaz326/the-hidden-cost-of-process-level-gpu-concurrency-why-your-gpu-inference-server-wastes-75-of-vram-e5100db5d1e8',
     tags: ['GPU', 'VRAM', 'Concurrency'],
     readTime: '10 min',
-    image: '/writing/article-3.jpg',
+    image: '/writing/process-concurrency.jpg',
     gradient: 'from-rose-950 via-rose-900 to-slate-900 dark:from-rose-950 dark:via-[#1a0a0f] dark:to-[#0a0a0f]',
     accentText: 'text-rose-400 dark:text-rose-300',
   },
   {
-    n: '04',
+    n: '05',
     title: "I Opened the GPU Black Box For LLM Inference. Here's What I Found!",
     date: 'Apr 24, 2026',
     url: 'https://medium.com/@imrannaz326/i-opened-the-gpu-black-box-for-llm-inference-heres-what-i-found-0463f22e11aa',
     tags: ['GPU', 'LLM', 'Deep Dive'],
     readTime: '10 min',
-    image: '/writing/article-4.jpg',
+    image: '/writing/gpu-black-box.jpg',
     gradient: 'from-violet-950 via-violet-900 to-slate-900 dark:from-violet-950 dark:via-[#10091a] dark:to-[#0a0a0f]',
     accentText: 'text-violet-400 dark:text-violet-300',
   },
   {
-    n: '05',
+    n: '06',
     title: 'How I Built a Smart Semantic Search for Quick Commerce Using LLMs',
     date: 'May 18, 2025',
     url: 'https://medium.com/@imrannaz326/how-i-built-a-smart-semantic-search-for-quick-commerce-using-llms-bca4777f2766',
     tags: ['LLM', 'Semantic Search', 'NLP'],
     readTime: '4 min',
-    image: '/writing/article-5.jpg',
+    image: '/writing/semantic-search.jpg',
     gradient: 'from-emerald-950 via-emerald-900 to-slate-900 dark:from-emerald-950 dark:via-[#071510] dark:to-[#0a0a0f]',
     accentText: 'text-emerald-400 dark:text-emerald-300',
   },
   {
-    n: '06',
+    n: '07',
     title: 'Seamless Integration: Deploying FastAPI ML Inference Code with SageMaker BYOC + Nginx',
     date: 'Jun 26, 2023',
     url: 'https://medium.com/@imrannaz326/seamless-integration-deploying-fastapi-ml-inference-code-with-sagemaker-byoc-nginx-6802103f7a2c',
     tags: ['SageMaker', 'FastAPI', 'MLOps'],
     readTime: '5 min',
-    image: '/writing/article-6.jpg',
+    image: '/writing/sagemaker-byoc.jpg',
     gradient: 'from-amber-950 via-amber-900 to-slate-900 dark:from-amber-950 dark:via-[#1a1000] dark:to-[#0a0a0f]',
     accentText: 'text-amber-400 dark:text-amber-300',
   },
@@ -89,11 +105,10 @@ export default function Writing() {
       <div className="max-w-5xl mx-auto">
 
         <div className="flex items-center gap-4 mb-4">
-          <span className="font-mono text-cyan-600 dark:text-cyan-400 text-sm">05.</span>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">writing</h2>
           <div className="flex-1 h-px bg-black/[0.06] dark:bg-white/[0.05]" />
         </div>
-        <p className="font-mono text-sm text-slate-400 dark:text-slate-600 mb-10">
+        <p className="text-sm text-slate-400 dark:text-slate-600 mb-10">
           GPU inference internals · LLM serving at scale · Kubernetes · ML systems
         </p>
 
