@@ -1,6 +1,6 @@
 'use client'
 
-import AnatomyFigure, { type FigureData } from './AnatomyFigure'
+import AnatomyFigure, { type FigureData, type Station } from './AnatomyFigure'
 import * as M from './generated/gpuFigure'
 
 /* Binds one generated drawing to the figure component. Kept as its own module
@@ -17,6 +17,12 @@ const FIG: FigureData = {
   routes: M.FIGURE_ROUTES,
 }
 
-export default function GpuFigure() {
-  return <AnatomyFigure fig={FIG} />
+export default function GpuFigure({
+  bare = false,
+  onFocus,
+}: {
+  bare?: boolean
+  onFocus?: (s: Station | null) => void
+}) {
+  return <AnatomyFigure fig={FIG} bare={bare} onFocus={onFocus} />
 }

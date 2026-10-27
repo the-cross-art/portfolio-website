@@ -93,7 +93,15 @@ function Readout({ base, spread, unit }: FigureData['readout']) {
  * injected nodes: React owns that subtree's innerHTML, so anything attached
  * directly to the groups is lost the moment it re-renders.
  */
-export default function AnatomyFigure({ fig }: { fig: FigureData }) {
+export default function AnatomyFigure({
+  fig,
+  bare = false,
+  onFocus,
+}: {
+  fig: FigureData
+  bare?: boolean
+  onFocus?: (station: Station | null) => void
+}) {
   const hostRef = useRef<HTMLDivElement>(null)
   const tokenRef = useRef<SVGCircleElement>(null)
   const trailRef = useRef<SVGCircleElement>(null)
@@ -106,6 +114,13 @@ export default function AnatomyFigure({ fig }: { fig: FigureData }) {
 
   const active = held ?? hovered
   const current: Station | null = fig.stations.find(s => s.id === active) ?? null
+
+  /* Lets a caller put the readout somewhere else. In the hero the figure
+     bleeds off the right edge, so its own bottom strip would be clipped —
+     the panel lives in the opposite column instead. */
+  useEffect(() => {
+    onFocus?.(current)
+  }, [current, onFocus])
 
   /** A station plus the stations it contains. */
   const idsOf = useMemo(
@@ -294,10 +309,14 @@ export default function AnatomyFigure({ fig }: { fig: FigureData }) {
       onClick={() => setHeld(null)}
     >
       <div
-        className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-black/[0.07] dark:border-white/[0.07]"
-        style={{ background: 'var(--anatomy-card)' }}
+        className={
+          bare
+            ? 'relative min-h-0 flex-1 overflow-visible'
+            : 'relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-black/[0.07] dark:border-white/[0.07]'
+        }
+        style={bare ? undefined : { background: 'var(--anatomy-card)' }}
       >
-        <div className="pointer-events-none absolute inset-0 z-10 p-5">
+        <div className={`pointer-events-none absolute inset-0 z-10 p-5 ${bare ? 'hidden' : ''}`}>
           <div className="flex items-start justify-between">
             <span className="font-mono text-[10px] tracking-[0.2em] text-slate-400 dark:text-slate-700">
               {fig.fig}
@@ -332,7 +351,7 @@ export default function AnatomyFigure({ fig }: { fig: FigureData }) {
           <circle ref={tokenRef} r="2.6" fill="var(--anatomy-lit)" opacity="0" />
         </svg>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 p-5">
+        <div className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-6 p-5 ${bare ? 'hidden' : ''}`}>
           <span className="font-mono text-[10px] text-slate-400 dark:text-slate-600">
             {current ? current.spec.join('  ·  ') : 'hover a part · click to hold'}
           </span>
@@ -342,7 +361,7 @@ export default function AnatomyFigure({ fig }: { fig: FigureData }) {
         </div>
       </div>
 
-      <div className="mt-3 min-h-[2.75rem]">
+      <div className={`mt-3 min-h-[2.75rem] ${bare ? 'hidden' : ''}`}>
         {current ? (
           <p className="max-w-3xl text-[13px] leading-relaxed text-slate-700 dark:text-slate-400">
             <span className="font-mono text-cyan-700 dark:text-cyan-300">{current.name}</span>

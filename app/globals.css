@@ -140,3 +140,9 @@ html.dark ::selection {
 }
 
 .animate-fade-in-up { animation: fadeInUp 0.65s ease-out forwards; }
+
+/* used by the hero figure, which fades in once its chunk arrives */
+@keyframes fade-in {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
