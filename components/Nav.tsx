@@ -60,7 +60,7 @@ export default function Nav() {
             <a
               key={l.href}
               href={l.href}
-              className="font-mono text-sm text-slate-500 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+              className="text-sm text-slate-500 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
             >
               {l.label}
             </a>
@@ -82,7 +82,7 @@ export default function Nav() {
             href="https://www.dropbox.com/scl/fi/rff4d1qic60bwgkodgo0q/imran_resume_mle.pdf?rlkey=00tq7rj7ltju1yqzw9in9ttpw&st=x9pgfz91&dl=0"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-xs px-3 py-1.5 border border-cyan-400/40 dark:border-cyan-400/30 text-cyan-600 dark:text-cyan-400 rounded-lg hover:bg-cyan-50 dark:hover:bg-cyan-400/10 transition-all"
+            className="text-xs px-3 py-1.5 border border-cyan-400/40 dark:border-cyan-400/30 text-cyan-600 dark:text-cyan-400 rounded-lg hover:bg-cyan-50 dark:hover:bg-cyan-400/10 transition-all"
           >
             resume ↗
           </a>
@@ -121,7 +121,7 @@ export default function Nav() {
               key={l.href}
               href={l.href}
               onClick={() => setMenuOpen(false)}
-              className="font-mono text-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
+              className="text-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
             >
               {l.label}
             </a>

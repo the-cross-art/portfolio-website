@@ -46,7 +46,6 @@ export default function Projects() {
       <div className="max-w-5xl mx-auto">
 
         <div className="flex items-center gap-4 mb-12">
-          <span className="font-mono text-cyan-600 dark:text-cyan-400 text-sm">03.</span>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">projects</h2>
           <div className="flex-1 h-px bg-black/[0.06] dark:bg-white/[0.05]" />
         </div>
@@ -75,7 +74,7 @@ export default function Projects() {
                 )}
               </div>
 
-              <span className="font-mono text-[10px] text-slate-400 dark:text-slate-600 mb-4">{p.badge}</span>
+              <span className="text-[10px] text-slate-400 dark:text-slate-600 mb-4">{p.badge}</span>
 
               <div className="flex flex-wrap gap-1.5 mb-4">
                 {p.tags.map((t) => (

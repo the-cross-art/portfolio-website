@@ -23,11 +23,10 @@ export default function OpenSource() {
       <div className="max-w-5xl mx-auto">
 
         <div className="flex items-center gap-4 mb-4">
-          <span className="font-mono text-cyan-600 dark:text-cyan-400 text-sm">04.</span>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">open source</h2>
           <div className="flex-1 h-px bg-black/[0.06] dark:bg-white/[0.05]" />
         </div>
-        <p className="font-mono text-sm text-slate-400 dark:text-slate-600 mb-10">
+        <p className="text-sm text-slate-400 dark:text-slate-600 mb-10">
           Contributing upstream to the libraries I serve models with
         </p>
 
