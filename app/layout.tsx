@@ -12,11 +12,16 @@ export const metadata: Metadata = {
     'AI Applied Engineer II at QuillBot. I build the infrastructure that serves LLMs at scale. Writing about GPU inference, Kubernetes, and ML systems.',
   keywords: ['MLOps', 'LLM Serving', 'Kubernetes', 'vLLM', 'GPU Inference', 'ML Infrastructure'],
   authors: [{ name: 'Imran Nazir' }],
-  metadataBase: new URL('https://meimran.me'),
+  /* The live site. meimran.me is registered but has no DNS at all — the .ME
+     registry returns NXDOMAIN — so pointing metadata at it meant every link
+     preview resolved og:image to a host that does not exist, and WhatsApp,
+     Slack and LinkedIn all fell back to a bare link. Flip both of these back
+     once the domain is delegated to Netlify. */
+  metadataBase: new URL('https://meimran.netlify.app'),
   openGraph: {
     title: 'Imran Nazir — AI Applied Engineer',
     description: 'AI Applied Engineer II at QuillBot. I build the infrastructure that LLMs run on at scale.',
-    url: 'https://meimran.me',
+    url: 'https://meimran.netlify.app',
     siteName: 'Imran Nazir',
     type: 'website',
     locale: 'en_US',
