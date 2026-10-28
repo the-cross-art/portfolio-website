@@ -1,5 +1,13 @@
 const contributions = [
   {
+    org: 'vllm-project',
+    repo: 'vllm-project/vllm-metal',
+    what: 'LFM2-VL image input on the paged path',
+    pr: '#1182',
+    url: 'https://github.com/vllm-project/vllm-metal/pull/1182',
+    avatar: '/oss/vllm-project.png',
+  },
+  {
     org: 'huggingface',
     repo: 'huggingface/transformers',
     what: 'Decoder attention masking fix',
@@ -30,7 +38,7 @@ export default function OpenSource() {
           Contributing upstream to the libraries I serve models with
         </p>
 
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {contributions.map((c, i) => (
             <a
               key={c.url}
@@ -51,7 +59,7 @@ export default function OpenSource() {
                 <div className="font-mono text-[13px] text-slate-800 dark:text-slate-200 truncate group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">
                   {c.repo}
                 </div>
-                <div className="text-[13px] text-slate-600 dark:text-slate-400 mt-0.5 truncate">
+                <div className="text-[13px] leading-snug text-slate-600 dark:text-slate-400 mt-0.5">
                   {c.what}
                 </div>
                 <div className="flex items-center gap-2 mt-2">
